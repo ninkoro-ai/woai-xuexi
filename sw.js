@@ -1,7 +1,9 @@
 // 我ai学习 — Service Worker (app-shell offline cache)
-const CACHE = 'kycg-v32';
+const CACHE = 'kycg-v33';
 const SHELL = [
+  'app.html',
   'index.html',
+  'guide.html',
   'manifest.webmanifest',
   'icon.svg',
   'icon-192.png',
@@ -54,7 +56,7 @@ self.addEventListener('fetch', function (e) {
         return res;
       }).catch(function () {
         // 离线且缓存未命中时兜底返回首页
-        if (req.mode === 'navigate') return caches.match('index.html');
+        if (req.mode === 'navigate') return caches.match('app.html');
       });
     })
   );

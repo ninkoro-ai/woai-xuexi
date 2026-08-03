@@ -2,7 +2,7 @@
   "name": "我ai学习",
   "short_name": "我ai学习",
   "description": "AI 辅助学习工具，支持知识点打卡、艾宾浩斯复习与掌握度追踪。",
-  "start_url": "index.html",
+  "start_url": "app.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
