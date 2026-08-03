@@ -19,12 +19,35 @@
     background:#F4ECE7;color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
   }
   .phone{max-width:460px;margin:0 auto;background:#fff;min-height:100vh;
-    box-shadow:0 0 40px rgba(120,90,80,.12);padding-bottom:40px;}
+    box-shadow:0 0 40px rgba(120,90,80,.12);
+    padding-bottom:calc(40px + env(safe-area-inset-bottom, 0px));}
+
+  /* 顶部常驻返回栏 */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(14px) saturate(180%);
+    -webkit-backdrop-filter:blur(14px) saturate(180%);
+    border-bottom:1px solid var(--line);
+    padding:calc(env(safe-area-inset-top, 0px) + 9px) 14px 9px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .back-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(135deg,var(--coral),var(--coral-d));
+    color:#fff;text-decoration:none;font-weight:800;font-size:14px;
+    padding:9px 16px 9px 13px;border-radius:99px;
+    box-shadow:0 6px 16px rgba(232,85,122,.28);
+    -webkit-tap-highlight-color:transparent;transition:transform .16s ease;
+  }
+  .back-btn:active{transform:scale(.96);}
+  .back-btn .ar{font-size:15px;line-height:1;margin-top:-1px;}
+  .topbar .tb-t{font-size:13.5px;font-weight:800;color:var(--ink-2);}
 
   /* cover */
   .cover{
     background:linear-gradient(160deg,#FF8FA8 0%,var(--coral) 45%,#E8557A 100%);
-    color:#fff;padding:calc(env(safe-area-inset-top, 0px) + 28px) 24px 34px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;
+    color:#fff;padding:28px 24px 34px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;
   }
   .cover::after{content:"";position:absolute;right:-30px;bottom:-30px;width:150px;height:150px;
     background:radial-gradient(circle,rgba(255,255,255,.18),transparent 60%);}
@@ -84,10 +107,21 @@
     padding:20px;text-align:center;margin:4px 18px 0;}
   .footer-cta b{font-size:17px;}
   .footer-cta p{font-size:13px;opacity:.95;margin:6px 0 0;}
+  .fc-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    margin-top:14px;background:#fff;color:var(--coral-d);text-decoration:none;
+    font-weight:850;font-size:15px;padding:13px 26px;border-radius:99px;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    -webkit-tap-highlight-color:transparent;transition:transform .16s ease;}
+  .fc-btn:active{transform:scale(.96);}
 </style>
 </head>
 <body>
 <div class="phone">
+
+  <div class="topbar">
+    <a class="back-btn" href="app.html"><span class="ar">←</span>返回 APP</a>
+    <span class="tb-t">快速上手手册</span>
+  </div>
 
   <div class="cover">
     <span class="tag">保姆级 · 3 分钟上手</span>
@@ -187,6 +221,7 @@
     <div class="footer-cta">
       <b>90 天，从 8 月 2 日开始</b>
       <p>打开网页就能学，学完就有迹可循。这一程，陪你到考场。</p>
+      <a class="fc-btn" href="app.html"><span>←</span>返回 APP 开始学习</a>
     </div>
 
     <div class="foot">
