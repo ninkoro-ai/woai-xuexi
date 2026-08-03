@@ -1,5 +1,5 @@
 // 我ai学习 — Service Worker (app-shell offline cache)
-const CACHE = 'kycg-v33';
+const CACHE = 'kycg-v34';
 const SHELL = [
   'app.html',
   'index.html',
@@ -41,9 +41,23 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
-  // 仅缓存同源静态资源，接口/跨域直接放行
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  // 导航请求：绝不直接把「重定向响应」交给页面，否则浏览器报 "service worker has redirections"
+  if (req.mode === 'navigate') {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && (res.redirected || (res.status >= 300 && res.status < 400))) {
+          return caches.match('app.html').then(function (c) { return c || res; });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match('app.html').then(function (c) { return c || Response.error(); });
+      })
+    );
+    return;
+  }
 
   e.respondWith(
     caches.match(req).then(function (hit) {
@@ -54,10 +68,7 @@ self.addEventListener('fetch', function (e) {
           caches.open(CACHE).then(function (c) { c.put(req, copy); });
         }
         return res;
-      }).catch(function () {
-        // 离线且缓存未命中时兜底返回首页
-        if (req.mode === 'navigate') return caches.match('app.html');
-      });
+      }).catch(function () { return Response.error(); });
     })
   );
 });
