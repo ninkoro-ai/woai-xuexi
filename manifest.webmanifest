@@ -1,0 +1,25 @@
+{
+  "name": "我ai学习",
+  "short_name": "我ai学习",
+  "description": "AI 辅助学习工具，支持知识点打卡、艾宾浩斯复习与掌握度追踪。",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF6F2",
+  "theme_color": "#FF6B8A",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
