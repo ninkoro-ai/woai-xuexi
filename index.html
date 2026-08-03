@@ -180,38 +180,42 @@
   .twocol-doc{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;}
   @media(max-width:820px){ .twocol-doc{grid-template-columns:1fr;} }
 
-  /* ---------- Mobile responsive (<=768px) — 独立 App 化 Landing ---------- */
+  /* ---------- Mobile responsive (<=768px) — 纯欢迎页 Landing ---------- */
   @media (max-width:768px){
     /* 整站左右留白统一 20px */
     .wrap{padding-left:20px;padding-right:20px;}
     section{padding:56px 0;}
     .twocol-doc{gap:22px;}
 
-    /* 顶部导航：脱离 absolute，回归文档流排在最前（移动端顺序 1） */
+    /* 顶部导航：脱离 absolute，回归文档流置顶 */
     .nav-top{position:static;top:auto;}
     .nav-top .wrap{padding:14px 20px;}
 
-    /* Hero 容器：顶栏状态栏安全区 + 底部 home 指示安全区，内容居中、紧凑 */
+    /* 首屏 = 整屏欢迎区（100svh）：仅标题 + 主CTA；截图/演示统一在下方第二屏 */
     .stage{padding:env(safe-area-inset-top, 0px) 0 0;}
     .stage .wrap{
+      min-height:100vh;min-height:100svh;
+      display:flex;flex-direction:column;justify-content:center;
       padding:18px 20px calc(36px + env(safe-area-inset-bottom, 0px));
       text-align:center;
     }
-    .spotlight{display:none;} /* 小屏去掉重装饰，减负 */
+    .spotlight{display:none;}
 
-    /* 移动端信息层级（顺序 2→6）：标签 → 主标题 → 一句话卖点 → 主CTA → 截图 */
-    .badge{margin-bottom:16px;font-size:12px;padding:6px 14px;}
-    .brand{font-size:clamp(42px,12vw,48px);line-height:.98;letter-spacing:-.03em;}
-    .hero-sub{font-size:16px;line-height:1.5;margin:12px 0 0;}
-    .hero-desc{display:none;}      /* 隐藏长描述 */
-    .hero-meta{display:none;}      /* 隐藏过多标签 */
-
-    /* 按钮：主按钮独占一行、满宽；次按钮隐藏（顺序 5 只留主 CTA） */
-    .cta-row{flex-direction:column;justify-content:center;gap:12px;margin-top:22px;}
-    .btn{width:100%;justify-content:center;font-size:16px;padding:16px 24px;}
+    /* 精简首屏信息密度：隐藏发布标签 / 一句话卖点 / 长描述 / 标签组 / 次按钮 */
+    .badge{display:none;}
+    .hero-sub{display:none;}
+    .hero-desc{display:none;}
+    .hero-meta{display:none;}
     .btn-ghost{display:none;}
 
-    /* 产品截图：响应式缩放（宽度 90% / 上限 360），不靠绝对定位 */
+    /* 主标题缩小字号与字重，降低视觉权重 */
+    .brand{font-size:clamp(34px,9vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05;}
+
+    /* 主CTA 满宽、居中 */
+    .cta-row{flex-direction:column;justify-content:center;gap:12px;margin-top:22px;}
+    .btn{width:100%;justify-content:center;font-size:16px;padding:16px 24px;}
+
+    /* 产品截图作为第二屏（首屏下方）展示，响应式缩放 */
     .phone-hero{margin:30px auto 0;width:90%;max-width:360px;}
   }
 </style>
@@ -241,7 +245,8 @@
       <a class="btn btn-ghost" href="guide.html">快速上手手册</a>
     </div>
 
-    <!-- phone hero mockup -->
+      </div>
+<!-- phone hero mockup（移动端作为第二屏展示） -->
     <div class="phone-hero">
       <svg class="phone" viewBox="0 0 300 540" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="300" height="540" rx="34" fill="#16121A"/>
@@ -287,7 +292,7 @@
         <text x="210" y="513" font-size="9" fill="#9A8E88" font-family="sans-serif">题库</text>
       </svg>
     </div>
-  </div>
+
 </header>
 
 <!-- ============ SECTION 01 — 学习效率（优先） ============ -->
