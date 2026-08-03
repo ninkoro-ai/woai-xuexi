@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>我ai学习 · 2026 考研学习新品发布</title>
 <style>
   :root{
@@ -35,7 +37,7 @@
   /* ---------- Stage hero ---------- */
   .stage{
     position:relative;background:radial-gradient(120% 90% at 50% -10%, #3A2440 0%, var(--stage) 55%, #0E0B12 100%);
-    color:#fff;overflow:hidden;padding:0;
+    color:#fff;overflow:hidden;padding:env(safe-area-inset-top, 0px) 0 0;
   }
   .stage::before{
     content:"";position:absolute;inset:0;

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>我ai学习 · 快速上手手册（保姆级）</title>
 <style>
   :root{
@@ -22,7 +24,7 @@
   /* cover */
   .cover{
     background:linear-gradient(160deg,#FF8FA8 0%,var(--coral) 45%,#E8557A 100%);
-    color:#fff;padding:46px 24px 34px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;
+    color:#fff;padding:calc(env(safe-area-inset-top, 0px) + 28px) 24px 34px;border-radius:0 0 30px 30px;position:relative;overflow:hidden;
   }
   .cover::after{content:"";position:absolute;right:-30px;bottom:-30px;width:150px;height:150px;
     background:radial-gradient(circle,rgba(255,255,255,.18),transparent 60%);}
