@@ -119,6 +119,7 @@
   .nav .links a.txt{color:var(--on-dark-2);font-size:14px;font-weight:600;transition:color .2s;}
   .nav .links a.txt:hover{color:#fff;}
   .nav .btn{padding:9px 18px;font-size:13.5px;box-shadow:0 6px 18px rgba(255,107,138,.34);}
+  .nav .btn .short{display:none;}
 
   /* ============ Hero ============ */
   .hero{
@@ -375,7 +376,9 @@
     .foot .actions .btn{width:100%;}
   }
   @media (max-width:420px){
-    .nav .btn{padding:8px 14px;font-size:12.5px;}
+    .nav .btn{padding:8px 13px;font-size:12.5px;}
+    .nav .btn .long{display:none;}
+    .nav .btn .short{display:inline;}
     .nav .logo i{width:24px;height:24px;border-radius:7px;font-size:11px;}
     .nav .logo span{font-size:14px;}
   }
@@ -403,7 +406,7 @@
       <a class="txt" href="#why">为什么</a>
       <a class="txt" href="#how">怎么用</a>
       <a class="txt" href="guide.html">手册</a>
-      <a class="btn btn-primary" href="app">立即进入</a>
+      <a class="btn btn-primary" href="app"><span class="long">立即进入</span><span class="short">进入</span></a>
     </div>
   </div>
 </nav>
