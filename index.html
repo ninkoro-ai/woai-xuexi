@@ -208,10 +208,22 @@
   /* ============ Numbers band ============ */
   .band-dark{
     background:linear-gradient(180deg,var(--stage) 0%, var(--stage-2) 50%, var(--stage) 100%);
-    color:#fff;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+    color:#fff;border-top:1px solid var(--hairline);
   }
   .band-dark .headline{color:#fff;}
   .band-dark .subline{color:var(--on-dark-2);}
+
+  /* 过渡色带：深紫舞台 → 暖白，消除「一次说清楚」与「核心卖点」之间的色块断层 */
+  .seam{position:relative;width:100%;margin:0;padding:0;border:0;line-height:0;display:block;}
+  .seam-dl{
+    height:clamp(120px,16vw,200px);
+    background:linear-gradient(180deg,
+      var(--stage) 0%,
+      #1B1522 28%,
+      #4A3F55 55%,
+      #B8AEC4 80%,
+      #FFFFFF 100%);
+  }
   .stat-grid{
     display:grid;grid-template-columns:repeat(4,1fr);
     gap:clamp(14px,2.6vw,26px);
@@ -456,6 +468,9 @@
     </div>
   </div>
 </section>
+
+<!-- ============ 过渡色带：深紫 → 暖白 ============ -->
+<div class="seam seam-dl" aria-hidden="true"></div>
 
 <!-- ============ Pillars ============ -->
 <section id="why" class="band-light">
