@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1C1330">
+<meta name="theme-color" content="#0F0720">
 <meta name="description" content="我ai学习 —— 专为 2026 考研专硕 095131 农艺与种业打造的 AI 备考工作台。207 个知识点、90 天计划、艾宾浩斯自动复习，数据全部留在本机。打开网页即开即学。">
 <title>我ai学习 · 2026 考研备考工作台</title>
 <style>
@@ -37,11 +37,31 @@
   html,body{margin:0;padding:0;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    color:var(--ink);
-    background:var(--stage);
+    color:var(--on-dark);
+    /* 整页单一演化背景：随滚动从最深到最浓再落回深，模块不再各自上色 */
+    background:linear-gradient(180deg,
+      #0F0720 0%,
+      #160B2E 8%,
+      #1E103D 20%,
+      #271248 33%,
+      #322056 46%,
+      #3D1A63 58%,
+      #492172 70%,
+      #5B267A 82%,
+      #52206F 92%,
+      #3D1852 100%);
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+  }
+  /* 固定环境光层：贯穿全页的柔光团，稳定被照亮的空间（无动画、不影响阅读） */
+  .ambient{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(40vw 40vw at 14% 16%, rgba(255,107,138,.14), transparent 62%),
+      radial-gradient(34vw 34vw at 86% 26%, rgba(127,200,169,.09), transparent 62%),
+      radial-gradient(48vw 48vw at 50% 58%, rgba(255,208,138,.08), transparent 64%),
+      radial-gradient(46vw 46vw at 72% 92%, rgba(123,62,110,.20), transparent 66%);
   }
   img,svg{display:block;max-width:100%;}
   a{color:inherit;text-decoration:none;}
@@ -103,7 +123,7 @@
   /* ============ Nav ============ */
   .nav{
     position:fixed;inset:0 0 auto 0;z-index:100;
-    background:rgba(28,19,48,.72);
+    background:rgba(15,7,32,.72);
     -webkit-backdrop-filter:blur(14px) saturate(1.3);
     backdrop-filter:blur(14px) saturate(1.3);
     border-bottom:1px solid var(--hairline);
@@ -128,8 +148,6 @@
     display:flex;align-items:center;
     padding:calc(var(--nav-h) + clamp(48px,10vw,90px)) 0 clamp(44px,8vw,80px);
     color:#fff;
-    background:
-      radial-gradient(130% 90% at 50% -12%, #6B3E6E 0%, var(--stage-2) 46%, var(--stage) 100%);
     overflow:hidden;
     text-align:center;
   }
@@ -139,10 +157,6 @@
       radial-gradient(44% 34% at 16% 24%, rgba(255,107,138,.26), transparent 64%),
       radial-gradient(40% 30% at 86% 22%, rgba(127,200,169,.16), transparent 64%),
       radial-gradient(52% 40% at 50% 108%, rgba(255,208,138,.13), transparent 66%);
-  }
-  .hero::after{
-    content:"";position:absolute;inset:auto 0 0 0;height:1px;z-index:-1;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
   }
   .hero .badge{
     display:inline-flex;align-items:center;gap:9px;
@@ -184,7 +198,8 @@
     gap:clamp(10px,2vw,18px);
     margin-top:clamp(34px,5.6vw,58px);
     padding-top:clamp(22px,3.4vw,32px);
-    border-top:1px solid var(--hairline);
+    border-top:1px solid;
+    border-image:linear-gradient(90deg,transparent,var(--hairline),transparent) 1;
   }
   .spec-strip .s{min-width:0;}
   .spec-strip .n{
@@ -207,8 +222,15 @@
 
   /* ============ Numbers band ============ */
   .band-dark{
-    background:linear-gradient(180deg,var(--stage) 0%, var(--stage-2) 50%, var(--stage) 100%);
+    position:relative;isolation:isolate;
+    background:transparent;
     color:#fff;
+  }
+  /* 过渡光晕：Hero 底部 → 数字墙，珊瑚粉柔光融入 */
+  .band-dark::before{
+    content:"";position:absolute;left:0;right:0;top:-130px;height:clamp(160px,22vw,300px);
+    z-index:-1;pointer-events:none;
+    background:radial-gradient(60% 100% at 50% 100%, rgba(255,107,138,.12), transparent 70%);
   }
   .band-dark .headline{color:#fff;}
   .band-dark .subline{color:var(--on-dark-2);}
@@ -234,15 +256,16 @@
   .stat .d{margin-top:4px;font-size:clamp(10.5px,1.5vw,12.5px);color:var(--on-dark-3);}
 
   /* ============ Pillars (卖点分屏) ============ */
-  .band-light{background:var(--stage);color:#fff;}
-  .band-cream{background:var(--stage);color:#fff;}
+  .band-light{background:transparent;color:#fff;}
+  .band-cream{background:transparent;color:#fff;}
   .band-light .subline,.band-cream .subline{color:var(--on-dark-2);}
 
   .pillar{
     display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,.58fr);
     gap:clamp(22px,5vw,64px);align-items:center;
     padding:clamp(38px,6vw,64px) 0;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid;
+    border-image:linear-gradient(90deg,transparent,var(--hairline),transparent) 1;
   }
   .pillar:last-child{border-bottom:0;}
   .pillar .no{
@@ -262,16 +285,22 @@
   }
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(14px,2.2vw,20px);}
   .chips span{
-    font-size:clamp(11.5px,1.6vw,13px);font-weight:700;color:var(--ink-2);
-    background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;
+    font-size:clamp(11.5px,1.6vw,13px);font-weight:700;color:var(--on-dark-2);
+    background:rgba(255,255,255,.07);border:1px solid var(--hairline);border-radius:999px;padding:7px 13px;
   }
-  .band-light .chips span{background:#fff;}
+  .band-light .chips span{background:rgba(255,255,255,.07);}
 
   /* ============ Quote (金句屏) ============ */
   .quote{
-    background:
-      radial-gradient(120% 100% at 50% 0%, #6B3E6E 0%, var(--stage-2) 44%, var(--stage) 100%);
+    position:relative;isolation:isolate;
+    background:transparent;
     color:#fff;text-align:center;
+  }
+  /* 过渡光晕：核心卖点 → AI 讲题，暖金柔光融入 */
+  .quote::before{
+    content:"";position:absolute;left:0;right:0;top:-120px;height:clamp(160px,22vw,300px);
+    z-index:-1;pointer-events:none;
+    background:radial-gradient(56% 100% at 50% 100%, rgba(255,208,138,.12), transparent 70%);
   }
   .quote .big{
     font-size:clamp(24px,5.8vw,58px);font-weight:900;letter-spacing:-.035em;line-height:1.22;
@@ -302,18 +331,18 @@
     counter-reset:st;
   }
   .step{
-    position:relative;min-width:0;color:var(--ink);
-    background:#fff;border:1px solid var(--line);border-radius:20px;
+    position:relative;min-width:0;color:var(--on-dark);
+    background:rgba(255,255,255,.05);border:1px solid var(--hairline);border-radius:20px;
     padding:clamp(20px,3vw,28px) clamp(16px,2.4vw,22px);
-    transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+    transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
   }
-  .step:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(120,90,80,.10);}
+  .step:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,0,0,.28);background:rgba(255,255,255,.08);}
   .step .num{
     font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.04em;line-height:1;
-    color:var(--coral);opacity:.34;
+    color:var(--coral);opacity:.5;
   }
-  .step h4{margin:clamp(8px,1.4vw,12px) 0 6px;font-size:clamp(15px,2.1vw,18px);font-weight:850;letter-spacing:-.015em;}
-  .step p{margin:0;color:var(--ink-2);font-size:clamp(12.5px,1.7vw,14.5px);line-height:1.62;overflow-wrap:break-word;}
+  .step h4{margin:clamp(8px,1.4vw,12px) 0 6px;font-size:clamp(15px,2.1vw,18px);font-weight:850;letter-spacing:-.015em;color:#fff;}
+  .step p{margin:0;color:var(--on-dark-2);font-size:clamp(12.5px,1.7vw,14.5px);line-height:1.62;overflow-wrap:break-word;}
 
   /* ============ Rules (次要信息, 收敛) ============ */
   .rules{
@@ -322,7 +351,7 @@
     max-width:920px;margin:clamp(30px,4.6vw,46px) auto 0;text-align:left;
   }
   .rule{
-    background:#fff;border:1px solid var(--line);border-radius:16px;color:var(--ink);
+    background:rgba(255,255,255,.05);border:1px solid var(--hairline);border-radius:16px;color:var(--on-dark);
     padding:clamp(16px,2.4vw,20px) clamp(16px,2.4vw,22px);min-width:0;
   }
   .rule .t{
@@ -334,14 +363,21 @@
   .rule .t.mint{background:linear-gradient(135deg,var(--mint),var(--mint-d));}
   .rule .t.amber{background:linear-gradient(135deg,var(--amber),#C9791B);}
   .rule .t.ink{background:linear-gradient(135deg,#5F544E,#2A2320);}
-  .rule .b{font-size:clamp(13px,1.8vw,14.8px);color:var(--ink-2);line-height:1.68;overflow-wrap:break-word;}
-  .rule .b b{color:var(--ink);font-weight:800;}
+  .rule .b{font-size:clamp(13px,1.8vw,14.8px);color:var(--on-dark-2);line-height:1.68;overflow-wrap:break-word;}
+  .rule .b b{color:#fff;font-weight:800;}
 
   /* ============ Footer CTA ============ */
   .foot{
-    background:radial-gradient(120% 100% at 50% 0%, #6B3E6E 0%, var(--stage-2) 46%, var(--stage) 100%);
+    position:relative;isolation:isolate;
+    background:transparent;
     color:#fff;text-align:center;
     padding:clamp(70px,11vw,130px) 0 clamp(40px,6vw,64px);
+  }
+  /* 过渡光晕：打卡规则 → 底部 CTA，珊瑚粉高潮柔光融入 */
+  .foot::before{
+    content:"";position:absolute;left:0;right:0;top:-100px;height:clamp(180px,26vw,340px);
+    z-index:-1;pointer-events:none;
+    background:radial-gradient(70% 100% at 50% 100%, rgba(255,107,138,.18), transparent 72%);
   }
   .foot .display{color:#fff;}
   .foot .subline{color:var(--on-dark-2);margin-left:auto;margin-right:auto;max-width:30em;}
@@ -349,7 +385,8 @@
   .foot-note{
     color:var(--on-dark-3);font-size:clamp(11px,1.5vw,12.5px);
     margin-top:clamp(34px,5vw,54px);padding-top:clamp(20px,3vw,28px);
-    border-top:1px solid var(--hairline);line-height:1.8;
+    border-top:1px solid;
+    border-image:linear-gradient(90deg,transparent,var(--hairline),transparent) 1;line-height:1.8;
     padding-bottom:env(safe-area-inset-bottom);
   }
   .foot-note a{color:var(--on-dark-2);text-decoration:underline;text-underline-offset:3px;}
@@ -398,6 +435,7 @@
 </head>
 <body>
 <script>document.documentElement.classList.add('js');</script>
+<div class="ambient" aria-hidden="true"></div>
 
 <!-- ============ Nav ============ -->
 <nav class="nav">
