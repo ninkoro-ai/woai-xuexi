@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0E0B12">
+<meta name="theme-color" content="#1C1330">
 <meta name="description" content="我ai学习 —— 专为 2026 考研专硕 095131 农艺与种业打造的 AI 备考工作台。207 个知识点、90 天计划、艾宾浩斯自动复习，数据全部留在本机。打开网页即开即学。">
 <title>我ai学习 · 2026 考研备考工作台</title>
 <style>
@@ -19,7 +19,7 @@
     --cream:#FFF8F2;
     --line:#EFE3DC;
 
-    --stage:#0E0B12; --stage-2:#171220; --stage-3:#221A2B;
+    --stage:#1C1330; --stage-2:#281B40; --stage-3:#382A52;
     --on-dark:#FFFFFF;
     --on-dark-2:rgba(255,255,255,.66);
     --on-dark-3:rgba(255,255,255,.40);
@@ -103,7 +103,7 @@
   /* ============ Nav ============ */
   .nav{
     position:fixed;inset:0 0 auto 0;z-index:100;
-    background:rgba(14,11,18,.72);
+    background:rgba(28,19,48,.72);
     -webkit-backdrop-filter:blur(14px) saturate(1.3);
     backdrop-filter:blur(14px) saturate(1.3);
     border-bottom:1px solid var(--hairline);
@@ -129,7 +129,7 @@
     padding:calc(var(--nav-h) + clamp(48px,10vw,90px)) 0 clamp(44px,8vw,80px);
     color:#fff;
     background:
-      radial-gradient(130% 90% at 50% -12%, #4A2B52 0%, var(--stage-2) 46%, var(--stage) 100%);
+      radial-gradient(130% 90% at 50% -12%, #6B3E6E 0%, var(--stage-2) 46%, var(--stage) 100%);
     overflow:hidden;
     text-align:center;
   }
@@ -213,27 +213,6 @@
   .band-dark .headline{color:#fff;}
   .band-dark .subline{color:var(--on-dark-2);}
 
-  /* 过渡色带：深紫舞台 → 暖白，消除「一次说清楚」与「核心卖点」之间的色块断层 */
-  .seam{position:relative;width:100%;margin:0;padding:0;border:0;line-height:0;display:block;}
-  .seam-dl{
-    height:clamp(120px,16vw,200px);
-    background:linear-gradient(180deg,
-      var(--stage) 0%,
-      #1B1522 28%,
-      #4A3F55 55%,
-      #B8AEC4 80%,
-      var(--cream) 100%);
-  }
-  /* 暖白 → 深紫（镜像），用于浅色板块底部接到深色舞台 */
-  .seam-ld{
-    height:clamp(120px,16vw,200px);
-    background:linear-gradient(180deg,
-      var(--cream) 0%,
-      #B8AEC4 20%,
-      #4A3F55 48%,
-      #1B1522 74%,
-      #4A2B52 100%);
-  }
   .stat-grid{
     display:grid;grid-template-columns:repeat(4,1fr);
     gap:clamp(14px,2.6vw,26px);
@@ -255,9 +234,9 @@
   .stat .d{margin-top:4px;font-size:clamp(10.5px,1.5vw,12.5px);color:var(--on-dark-3);}
 
   /* ============ Pillars (卖点分屏) ============ */
-  .band-light{background:var(--cream);color:var(--ink);}
-  .band-cream{background:var(--cream);color:var(--ink);}
-  .band-light .subline,.band-cream .subline{color:var(--ink-2);}
+  .band-light{background:var(--stage);color:#fff;}
+  .band-cream{background:var(--stage);color:#fff;}
+  .band-light .subline,.band-cream .subline{color:var(--on-dark-2);}
 
   .pillar{
     display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,.58fr);
@@ -272,13 +251,13 @@
     -webkit-background-clip:text;background-clip:text;color:transparent;
     opacity:.92;
   }
-  .pillar .no small{display:block;font-size:clamp(15px,2.4vw,22px);font-weight:900;letter-spacing:.04em;color:var(--ink);margin-top:clamp(6px,1.2vw,12px);-webkit-text-fill-color:var(--ink);}
+  .pillar .no small{display:block;font-size:clamp(15px,2.4vw,22px);font-weight:900;letter-spacing:.04em;color:#fff;margin-top:clamp(6px,1.2vw,12px);-webkit-text-fill-color:#fff;}
   .pillar h3{
     font-size:clamp(21px,4.1vw,38px);font-weight:900;letter-spacing:-.028em;line-height:1.24;margin:0;
     overflow-wrap:break-word;
   }
   .pillar p{
-    font-size:clamp(14px,1.95vw,17px);color:var(--ink-2);line-height:1.78;margin:clamp(10px,1.8vw,16px) 0 0;
+    font-size:clamp(14px,1.95vw,17px);color:var(--on-dark-2);line-height:1.78;margin:clamp(10px,1.8vw,16px) 0 0;
     overflow-wrap:break-word;
   }
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(14px,2.2vw,20px);}
@@ -291,7 +270,7 @@
   /* ============ Quote (金句屏) ============ */
   .quote{
     background:
-      radial-gradient(120% 100% at 50% 0%, #4A2B52 0%, var(--stage-2) 44%, var(--stage) 100%);
+      radial-gradient(120% 100% at 50% 0%, #6B3E6E 0%, var(--stage-2) 44%, var(--stage) 100%);
     color:#fff;text-align:center;
   }
   .quote .big{
@@ -323,7 +302,7 @@
     counter-reset:st;
   }
   .step{
-    position:relative;min-width:0;
+    position:relative;min-width:0;color:var(--ink);
     background:#fff;border:1px solid var(--line);border-radius:20px;
     padding:clamp(20px,3vw,28px) clamp(16px,2.4vw,22px);
     transition:transform .2s var(--ease),box-shadow .2s var(--ease);
@@ -343,7 +322,7 @@
     max-width:920px;margin:clamp(30px,4.6vw,46px) auto 0;text-align:left;
   }
   .rule{
-    background:#fff;border:1px solid var(--line);border-radius:16px;
+    background:#fff;border:1px solid var(--line);border-radius:16px;color:var(--ink);
     padding:clamp(16px,2.4vw,20px) clamp(16px,2.4vw,22px);min-width:0;
   }
   .rule .t{
@@ -360,7 +339,7 @@
 
   /* ============ Footer CTA ============ */
   .foot{
-    background:radial-gradient(120% 100% at 50% 0%, #4A2B52 0%, var(--stage-2) 46%, var(--stage) 100%);
+    background:radial-gradient(120% 100% at 50% 0%, #6B3E6E 0%, var(--stage-2) 46%, var(--stage) 100%);
     color:#fff;text-align:center;
     padding:clamp(70px,11vw,130px) 0 clamp(40px,6vw,64px);
   }
@@ -479,9 +458,6 @@
   </div>
 </section>
 
-<!-- ============ 过渡色带：深紫 → 暖白 ============ -->
-<div class="seam seam-dl" aria-hidden="true"></div>
-
 <!-- ============ Pillars ============ -->
 <section id="why" class="band-light">
   <div class="wrap">
@@ -520,9 +496,6 @@
   </div>
 </section>
 
-<!-- ============ 过渡色带：暖白 → 深紫 ============ -->
-<div class="seam seam-ld" aria-hidden="true"></div>
-
 <!-- ============ Quote / AI ============ -->
 <section class="quote">
   <div class="wrap">
@@ -538,9 +511,6 @@
     </div>
   </div>
 </section>
-
-<!-- ============ 过渡色带：深紫 → 暖白 ============ -->
-<div class="seam seam-dl" aria-hidden="true"></div>
 
 <!-- ============ Memory curve ============ -->
 <section class="band-cream">
@@ -599,9 +569,6 @@
     </div>
   </div>
 </section>
-
-<!-- ============ 过渡色带：暖白 → 深紫 ============ -->
-<div class="seam seam-ld" aria-hidden="true"></div>
 
 <!-- ============ Footer CTA ============ -->
 <section class="foot">
