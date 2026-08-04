@@ -67,8 +67,7 @@
     color:var(--ink);
     font-size:16px;
     line-height:1.5;
-    min-height:calc(var(--vh,1vh) * 100);
-    padding-bottom:calc(24px + env(safe-area-inset-bottom));
+    min-height:100dvh;
     cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><g fill='%23FF6B8A' stroke='%23FFFFFF' stroke-width='1.5' stroke-linejoin='round'><circle cx='14' cy='17' r='5'/><circle cx='6' cy='10' r='2.4'/><circle cx='22' cy='10' r='2.4'/><circle cx='9' cy='5.5' r='2.1'/><circle cx='19' cy='5.5' r='2.1'/></g></svg>") 14 14, default;
   }
   @media (hover:hover) and (pointer:fine){
@@ -77,7 +76,7 @@
   @media (prefers-reduced-motion: reduce){
     *{transition-duration:.001ms!important;animation-duration:.001ms!important;}
   }
-  .wrap{max-width:480px;margin:0 auto;height:calc(var(--vh,1vh) * 100);height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:0 16px calc(96px + env(safe-area-inset-bottom));position:relative;}
+  .wrap{max-width:480px;margin:0 auto;height:calc(var(--vh,1vh) * 100);height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:0 16px calc(64px + env(safe-area-inset-bottom));position:relative;}
   img,video,iframe,canvas,table,pre,svg{max-width:100%;height:auto;}
 
   /* 顶栏 */
@@ -517,6 +516,7 @@
     position:fixed;left:0;right:0;bottom:0;z-index:60;
     max-width:480px;margin:0 auto;
     display:flex;
+    box-sizing:content-box;height:64px;
     background:rgba(255,248,242,.92);
     backdrop-filter:blur(20px) saturate(180%);
     -webkit-backdrop-filter:blur(20px) saturate(180%);
@@ -524,6 +524,20 @@
     box-shadow:0 -4px 20px rgba(255,107,138,.07);
     padding-bottom:env(safe-area-inset-bottom);
   }
+  /* —— iOS 底部安全区：浏览器 vs PWA 主屏，统一以 Home Indicator 为准，不重复留白 —— */
+  /* 浏览器（Safari / 微信 WebView）：地址栏收起后底部即 Home Indicator 安全区 */
+  @media not all and (display-mode: standalone){
+    .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
+    .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
+  }
+  /* PWA 主屏（添加到桌面 standalone）：无地址栏，仅保留 Home Indicator 安全区 */
+  @media all and (display-mode: standalone){
+    .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
+    .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
+  }
+  /* JS 注入的运行环境标识（pwa-mode / browser-mode），与媒体查询双保险 */
+  body.pwa-mode .tabbar, body.browser-mode .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
+  body.pwa-mode .wrap, body.browser-mode .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
   .tabbar .tb{
     position:relative;flex:1;border:none;background:none;
     display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -548,7 +562,7 @@
   /* 弹窗 */
   .ovl{
     position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
-    height:calc(var(--vh,1vh) * 100);
+    height:calc(var(--vh,1vh) * 100);height:100dvh;
     background:rgba(0,0,0,.4);
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
@@ -560,7 +574,7 @@
   html.modal-open, html.modal-open body{overflow:hidden;}
   .qdlg{
     background:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;
-    width:100%;max-width:480px;max-height:calc(var(--vh,1vh) * 88);overflow-y:auto;
+    width:100%;max-width:480px;max-height:calc(var(--vh,1vh) * 88);max-height:calc(100dvh * .88);overflow-y:auto;
     overscroll-behavior:contain;
     box-shadow:var(--shadow-lg);padding:24px 20px;
     transform:translateY(100%);transition:transform .3s var(--spring);
@@ -1212,6 +1226,19 @@
     var h = window.innerHeight || document.documentElement.clientHeight;
     document.documentElement.style.setProperty('--vh', (h*0.01)+'px');
   }
+  // 运行环境检测：区分 PWA 主屏(standalone) 与普通浏览器，给 body 打标识。
+  // 与 CSS @media(display-mode) 双保险，便于后续按环境微调布局（4 种环境：Safari / PWA / 微信 WebView / 小程序 WebView）。
+  (function detectEnv(){
+    var mq = window.matchMedia ? window.matchMedia('(display-mode: standalone)') : null;
+    function apply(){
+      var standalone = (mq && mq.matches) || window.navigator.standalone === true;
+      document.body.classList.toggle('pwa-mode', standalone);
+      document.body.classList.toggle('browser-mode', !standalone);
+    }
+    apply();
+    if(mq && mq.addEventListener) mq.addEventListener('change', apply);
+    else if(mq && mq.addListener) mq.addListener(apply);
+  })();
   // 弹窗打开时锁定背景滚动，避免微信里背景橡皮筋导致“按钮乱跑”
   function lockScroll(on){
     document.documentElement.classList.toggle('modal-open', !!on);
