@@ -502,14 +502,6 @@
   .rec-item .r.sub{color:var(--coral);}
   .rec-item .t{font-size:11px;color:var(--ink-2);}
 
-  /* 提示 */
-  .notice{
-    background:var(--gold-soft);border:1px solid rgba(240,168,104,.3);
-    color:#9A6B1E;border-radius:var(--r-md);padding:12px 16px;font-size:13px;
-    margin-bottom:16px;display:flex;align-items:center;gap:10px;
-  }
-  .notice svg{width:20px;height:20px;flex:none;}
-
   .empty{color:var(--ink-2);font-size:13px;text-align:center;padding:20px 0;}
 
   .foot{text-align:center;color:var(--ink-2);font-size:11px;margin-top:16px;line-height:1.8;padding:0 8px;}
@@ -946,11 +938,6 @@
 
   <!-- 今日打卡 -->
   <div class="page active" id="page-today">
-    <div class="notice hidden" id="notice30">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span>数据已经有不少啦，建议到「我的」里导出备份一下～</span>
-    </div>
-
     <section class="card hero" id="todayCard">
       <div class="day-tag" id="dayTag">第 1 天 · Day 1</div>
       <div class="hero-count" id="dayCount"></div>
@@ -7223,11 +7210,6 @@
       }
     }
     $("recList").innerHTML = rel;
-
-    // 提示
-    var total = S.records.length + Object.keys(S.kpDone).length;
-    if(total>=30) $("notice30").classList.remove("hidden");
-    else $("notice30").classList.add("hidden");
   }
 
   function streak(){
