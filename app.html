@@ -76,13 +76,19 @@
     min-height:100dvh;
     cursor:var(--cursor-svg) 14 14, default;
   }
+  /* 应用外壳：flex 列布局 + 动态视口高度，根治 iOS Safari/PWA 底部空白 */
+  .app{
+    display:flex;flex-direction:column;
+    width:100%;max-width:480px;margin:0 auto;
+    height:100vh;height:100dvh;overflow:hidden;
+  }
   @media (hover:hover) and (pointer:fine){
     a,button,[role="button"],.clickable,.tab,.tk,.opt{cursor:var(--cursor-svg) 14 14, pointer;}
   }
   @media (prefers-reduced-motion: reduce){
     *{transition-duration:.001ms!important;animation-duration:.001ms!important;}
   }
-  .wrap{max-width:480px;margin:0 auto;height:calc(var(--vh,1vh) * 100);height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:0 16px calc(64px + env(safe-area-inset-bottom));position:relative;}
+  .wrap{flex:1 1 auto;min-height:0;width:100%;max-width:480px;margin:0 auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:0 16px env(safe-area-inset-bottom);position:relative;}
   img,video,iframe,canvas,table,pre,svg{max-width:100%;height:auto;}
 
   /* 顶栏 */
@@ -519,7 +525,7 @@
   .page.active{display:block;animation:pageIn .25s var(--spring);}
   @keyframes pageIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   .tabbar{
-    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    position:relative;z-index:60;width:100%;flex:none;
     max-width:480px;margin:0 auto;
     display:flex;
     box-sizing:content-box;height:64px;
@@ -530,20 +536,13 @@
     box-shadow:0 -4px 20px rgba(255,107,138,.07);
     padding-bottom:env(safe-area-inset-bottom);
   }
-  /* —— iOS 底部安全区：浏览器 vs PWA 主屏，统一以 Home Indicator 为准，不重复留白 —— */
-  /* 浏览器（Safari / 微信 WebView）：地址栏收起后底部即 Home Indicator 安全区 */
-  @media not all and (display-mode: standalone){
-    .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
-    .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
-  }
-  /* PWA 主屏（添加到桌面 standalone）：无地址栏，仅保留 Home Indicator 安全区 */
-  @media all and (display-mode: standalone){
-    .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
-    .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
-  }
-  /* JS 注入的运行环境标识（pwa-mode / browser-mode），与媒体查询双保险 */
+  /* —— iOS 底部安全区：tabbar 已改为 flex 内联贴底（非 fixed），由 flex 布局自然贴底 —— */
+  /* 浏览器（Safari / 微信 WebView）与 PWA 主屏统一：仅 tabbar 自身预留 Home Indicator 安全区 */
+  .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
   body.pwa-mode .tabbar, body.browser-mode .tabbar{ padding-bottom:env(safe-area-inset-bottom); }
-  body.pwa-mode .wrap, body.browser-mode .wrap{ padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
+  /* .wrap 不再为 fixed tabbar 预留 64px 内边距，避免 TabBar 上方出现大面积空白 */
+  .wrap{ padding-bottom:env(safe-area-inset-bottom); }
+  body.pwa-mode .wrap, body.browser-mode .wrap{ padding-bottom:env(safe-area-inset-bottom); }
   .tabbar .tb{
     position:relative;flex:1;border:none;background:none;
     display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -916,6 +915,7 @@
 </style>
 </head>
 <body>
+<div class="app">
 <div class="wrap">
 
   <nav class="top">
@@ -1124,6 +1124,7 @@
     我的
   </button>
 </nav>
+</div>
 
 <div class="toast" id="toast"></div>
 
