@@ -5,13 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>我ai学习 · 2026 考研学习新品发布</title>
+<meta name="description" content="我ai学习 —— 专为 2026 考研专硕 095131 农艺与种业打造的 AI 备考工作台。艾宾浩斯复习、AI 讲题、错题本、本地数据，一个网页即开即学。">
+<title>我ai学习 · 2026 考研备考工作台</title>
 <style>
   :root{
-    --coral:#FF6B8A; --coral-d:#E8557A; --mint:#7FC8A9; --mint-d:#2E7D52;
-    --amber:#E9A23B; --ink:#2A2320; --ink-2:#6B5F59; --ink-3:#9A8E88;
-    --cream:#FFF6F1; --line:#F0E4DD; --stage:#16121A; --stage-2:#221A2B;
-    --r-lg:24px; --r-md:18px; --r-sm:12px;
+    --coral:#FF6B8A; --coral-d:#E8557A; --coral-2:#FF8FA8;
+    --mint:#7FC8A9; --mint-d:#2E7D52;
+    --amber:#E9A23B;
+    --ink:#2A2320; --ink-2:#6B5F59; --ink-3:#9A8E88;
+    --cream:#FFF8F2; --cream-deep:#FDEEE6;
+    --line:#F0E4DD;
+    --stage:#16121A; --stage-2:#221A2B;
+    --r-lg:26px; --r-md:18px; --r-sm:12px;
+    --maxw:1120px;
+    --ease:cubic-bezier(.22,1,.36,1);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -20,588 +27,424 @@
     color:var(--ink); background:#fff; line-height:1.65; -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
-  section{padding:72px 0;}
-  .kicker{
-    display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--coral-d);
-  }
-  .sec-no{
-    font-size:14px;font-weight:800;color:var(--coral);letter-spacing:.1em;
-  }
-  h2.title{font-size:clamp(26px,4.4vw,40px);line-height:1.18;margin:14px 0 10px;font-weight:850;letter-spacing:-.02em;}
-  .lead{font-size:clamp(15px,2vw,18px);color:var(--ink-2);max-width:720px;margin:0 0 8px;}
-  .center{text-align:center;}
-  .center .lead{margin-left:auto;margin-right:auto;}
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
 
-  /* ---------- Stage hero ---------- */
-  .stage{
-    position:relative;background:radial-gradient(120% 90% at 50% -10%, #3A2440 0%, var(--stage) 55%, #0E0B12 100%);
-    color:#fff;overflow:hidden;padding:env(safe-area-inset-top, 0px) 0 0;
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:84px 0;}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--coral-d);
   }
-  .stage::before{
-    content:"";position:absolute;inset:0;
-    background:
-      radial-gradient(40% 30% at 20% 18%, rgba(255,107,138,.30), transparent 60%),
-      radial-gradient(40% 30% at 82% 22%, rgba(127,200,169,.22), transparent 60%);
-    pointer-events:none;
-  }
-  .spotlight{
-    position:absolute;left:50%;top:-30%;transform:translateX(-50%);
-    width:900px;height:520px;
-    background:radial-gradient(closest-side, rgba(255,255,255,.16), transparent 70%);
-    filter:blur(8px);pointer-events:none;
-  }
-  .stage .wrap{position:relative;padding:80px 22px 76px;text-align:center;}
-  .badge{
-    display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:99px;
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
-    font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:26px;
-    backdrop-filter:blur(6px);
-  }
-  .badge .dot{width:8px;height:8px;border-radius:99px;background:var(--mint);box-shadow:0 0 12px var(--mint);}
-  .brand{
-    font-size:clamp(52px,11vw,110px);font-weight:900;letter-spacing:-.04em;line-height:.96;margin:0;
-    background:linear-gradient(120deg,#FF8FA8 0%,#FF6B8A 40%,#FFD08A 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero-sub{font-size:clamp(17px,2.6vw,23px);font-weight:700;margin:18px 0 8px;color:#fff;}
-  .hero-desc{font-size:clamp(14px,2vw,17px);color:rgba(255,255,255,.72);max-width:600px;margin:0 auto 28px;}
-  .hero-meta{
-    display:inline-flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:34px;
-  }
-  .hero-meta span{
-    font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.10);
-    border:1px solid rgba(255,255,255,.16);padding:7px 14px;border-radius:99px;
-  }
-  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .sec-no{font-size:14px;font-weight:800;color:var(--coral);letter-spacing:.1em;}
+  h2.title{font-size:clamp(28px,4.6vw,44px);line-height:1.15;margin:12px 0 12px;font-weight:850;letter-spacing:-.025em;}
+  .lead{font-size:clamp(15.5px,2vw,18px);color:var(--ink-2);max-width:680px;margin:0 auto 10px;line-height:1.7;}
+  .center{text-align:center;}
+
+  /* Buttons */
   .btn{
-    display:inline-flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;
-    font-size:15px;font-weight:800;padding:14px 26px;border-radius:99px;border:1px solid transparent;
-    transition:transform .15s ease, box-shadow .15s ease;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-size:16px;font-weight:800;padding:16px 30px;border-radius:99px;border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .18s ease, background .18s ease;
+    cursor:pointer;white-space:nowrap;
   }
   .btn:active{transform:scale(.97);}
-  .btn-primary{background:#fff;color:var(--coral-d);box-shadow:0 10px 30px rgba(255,107,138,.35);}
-  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);}
-  .phone-hero{margin:46px auto 0;max-width:300px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.5));}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--coral-2),var(--coral));
+    color:#fff;box-shadow:0 12px 32px rgba(255,107,138,.42);
+  }
+  .btn-primary:hover{box-shadow:0 16px 40px rgba(255,107,138,.52);transform:translateY(-1px);}
+  .btn-ghost{
+    background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.32);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.14);}
+  .btn-outline{
+    background:#fff;color:var(--coral-d);border-color:var(--line);
+    box-shadow:0 4px 14px rgba(255,107,138,.08);
+  }
+  .btn-outline:hover{border-color:var(--coral-2);background:#fff8fa;}
+  .btn-lg{padding:18px 34px;font-size:17px;}
 
-  /* ---------- generic section bg ---------- */
+  /* Sticky nav */
+  .nav{
+    position:fixed;inset:0 0 auto 0;z-index:100;
+    background:rgba(22,18,26,.82);
+    backdrop-filter:blur(12px) saturate(1.2);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    transition:background .25s ease;
+  }
+  .nav .wrap{display:flex;justify-content:space-between;align-items:center;height:62px;}
+  .nav .logo{
+    display:flex;align-items:center;gap:10px;font-weight:900;color:#fff;font-size:18px;letter-spacing:-.02em;
+  }
+  .nav .logo i{
+    width:32px;height:32px;border-radius:10px;
+    background:linear-gradient(135deg,var(--coral-2),var(--coral));
+    display:grid;place-items:center;font-size:15px;font-style:normal;
+  }
+  .nav .links{display:flex;align-items:center;gap:22px;}
+  .nav a{color:rgba(255,255,255,.78);font-size:14px;font-weight:600;}
+  .nav a:hover{color:#fff;}
+  .nav .btn-primary{padding:10px 20px;font-size:14px;box-shadow:0 6px 18px rgba(255,107,138,.35);}
+
+  /* Hero */
+  .hero{
+    position:relative;background:
+      radial-gradient(120% 100% at 50% -10%, #3A2440 0%, var(--stage) 48%, #0E0B12 100%);
+    color:#fff;padding:calc(72px + 62px) 0 90px;overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(42% 34% at 18% 22%, rgba(255,107,138,.28), transparent 62%),
+      radial-gradient(38% 32% at 84% 26%, rgba(127,200,169,.20), transparent 62%);
+  }
+  .hero .wrap{position:relative;}
+  .hero-grid{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+  }
+  .hero .badge{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:24px;
+  }
+  .hero .badge .dot{width:8px;height:8px;border-radius:99px;background:var(--mint);box-shadow:0 0 12px var(--mint);}
+  .hero h1{
+    font-size:clamp(44px,7vw,78px);font-weight:900;letter-spacing:-.045em;line-height:.98;margin:0;
+    background:linear-gradient(120deg,#FF8FA8 0%,#FF6B8A 38%,#FFD08A 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .tagline{font-size:clamp(18px,2.8vw,26px);font-weight:700;margin:18px 0 14px;color:#fff;line-height:1.4;}
+  .hero .desc{font-size:clamp(15px,1.8vw,17.5px);color:rgba(255,255,255,.72);max-width:540px;margin:0 0 30px;line-height:1.7;}
+  .hero .actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+  .hero .meta{display:flex;gap:10px;flex-wrap:wrap;}
+  .hero .meta span{
+    font-size:12.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.16);padding:7px 13px;border-radius:99px;
+  }
+
+  /* Phone mockup */
+  .phone-wrap{position:relative;justify-self:end;}
+  .phone{
+    width:100%;max-width:300px;margin:0 auto;
+    border-radius:38px;padding:10px;background:#16121A;
+    box-shadow:
+      0 40px 90px rgba(0,0,0,.45),
+      0 0 0 1px rgba(255,255,255,.12),
+      inset 0 0 0 2px rgba(255,255,255,.06);
+    position:relative;
+  }
+  .phone img{
+    width:100%;height:auto;border-radius:28px;
+    border:1px solid rgba(255,255,255,.12);
+  }
+  .phone::after{
+    content:"";position:absolute;left:50%;top:10px;transform:translateX(-50%);
+    width:96px;height:24px;background:#16121A;border-radius:0 0 16px 16px;
+  }
+  .float-pill{
+    position:absolute;display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.94);border:1px solid var(--line);
+    border-radius:99px;padding:9px 15px;font-size:13px;font-weight:700;color:var(--ink);
+    box-shadow:0 12px 28px rgba(0,0,0,.18);
+  }
+  .float-pill.ear{top:20%;right:-16px;}
+  .float-pill.day{bottom:18%;left:-24px;}
+  .float-pill b{color:var(--coral-d);}
+
+  /* Sections */
   .alt{background:var(--cream);}
-  .grid{display:grid;gap:22px;}
-  .g2{grid-template-columns:1fr 1fr;}
-  .g3{grid-template-columns:repeat(3,1fr);}
-  @media(max-width:820px){ .g2,.g3{grid-template-columns:1fr;} }
-
-  .card{
-    background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;
-    box-shadow:0 14px 40px rgba(120,90,80,.07);
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  .feature-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;
+    box-shadow:0 14px 40px rgba(120,90,80,.07);transition:transform .2s var(--ease),box-shadow .2s var(--ease);
   }
-  .card h3{margin:0 0 8px;font-size:21px;font-weight:850;}
-  .card p{margin:0;color:var(--ink-2);font-size:15px;}
-
-  /* feature big cards */
-  .feat{position:relative;overflow:hidden;}
-  .feat .ic{
-    width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;
-    margin-bottom:16px;font-size:26px;color:#fff;font-weight:900;
+  .feature-card:hover{transform:translateY(-4px);box-shadow:0 22px 52px rgba(120,90,80,.11);}
+  .feature-card .ic{
+    width:54px;height:54px;border-radius:16px;display:grid;place-items:center;
+    font-size:22px;font-weight:900;color:#fff;margin-bottom:18px;
   }
-  .feat.l .ic{background:linear-gradient(135deg,var(--mint),var(--mint-d));}
-  .feat.c .ic{background:linear-gradient(135deg,var(--coral),var(--coral-d));}
-  .feat.w .ic{background:linear-gradient(135deg,var(--amber),#C9791B);}
-  .feat ul{margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:14.5px;}
-  .feat ul li{margin:6px 0;}
+  .feature-card h3{margin:0 0 8px;font-size:20px;font-weight:850;}
+  .feature-card p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.65;}
+  .feature-card ul{margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:14px;}
+  .feature-card li{margin:6px 0;}
+  .ic-mint{background:linear-gradient(135deg,var(--mint),var(--mint-d));}
+  .ic-coral{background:linear-gradient(135deg,var(--coral),var(--coral-d));}
+  .ic-amber{background:linear-gradient(135deg,var(--amber),#C9791B);}
 
-  /* highlights grid */
-  .hl{display:flex;gap:14px;align-items:flex-start;}
-  .hl .badge-num{
-    flex:none;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    font-weight:900;color:#fff;background:linear-gradient(135deg,var(--coral),var(--coral-d));font-size:16px;
+  /* Screenshot gallery */
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;margin-top:50px;}
+  .gallery.reverse{grid-template-columns:1fr 1fr;direction:rtl;}
+  .gallery.reverse > *{direction:ltr;}
+  .gallery .text{text-align:left;}
+  .gallery .text .kicker{margin-bottom:10px;}
+  .gallery .text h3{font-size:clamp(22px,3vw,30px);font-weight:850;margin:0 0 12px;line-height:1.2;}
+  .gallery .text p{color:var(--ink-2);font-size:16px;line-height:1.7;margin:0 0 14px;}
+  .shot{
+    background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px;
+    box-shadow:0 20px 56px rgba(120,90,80,.12);
   }
-  .hl h4{margin:2px 0 4px;font-size:16.5px;font-weight:800;}
-  .hl p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.55;}
-  .hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  @media(max-width:820px){ .hl-grid{grid-template-columns:1fr;} }
+  .shot img{border-radius:18px;width:100%;height:auto;}
+  figcaption{font-size:13px;color:var(--ink-3);text-align:center;margin-top:10px;}
 
-  /* mockup figure */
-  figure.shot{margin:0;}
-  figure.shot figcaption{font-size:13px;color:var(--ink-3);text-align:center;margin-top:10px;}
-  .shot-frame{
-    background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;
-    box-shadow:0 16px 44px rgba(120,90,80,.10);
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px;}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:22px;text-align:center;}
+  .step .num{
+    width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+    margin:0 auto 14px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--coral),var(--coral-d));
   }
-  svg.phone{width:100%;height:auto;display:block;border-radius:14px;}
+  .step h4{margin:0 0 6px;font-size:16px;font-weight:800;}
+  .step p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.55;}
 
-  /* principle curve */
-  .curve-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;box-shadow:0 14px 40px rgba(120,90,80,.07);}
-  .step-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
-  .step-pills span{
-    background:var(--cream);border:1px solid var(--line);border-radius:99px;padding:8px 14px;
-    font-size:14px;font-weight:700;color:var(--mint-d);
-  }
-  .step-pills span b{color:var(--coral-d);}
-
-  /* tables */
-  .rules{display:grid;gap:14px;}
+  /* Rules */
+  .rules{display:grid;gap:14px;max-width:900px;margin:38px auto 0;}
   .rule{
-    display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--line);
-    border-radius:var(--r-md);padding:18px 20px;
+    display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:var(--r-md);padding:20px 22px;
   }
   .rule .tag{
-    flex:none;min-width:104px;text-align:center;font-weight:850;font-size:14px;color:#fff;
-    background:linear-gradient(135deg,var(--coral),var(--coral-d));border-radius:12px;padding:10px 8px;
+    flex:none;min-width:110px;text-align:center;font-weight:850;font-size:13.5px;color:#fff;
+    background:linear-gradient(135deg,var(--coral),var(--coral-d));border-radius:12px;padding:10px 10px;
   }
   .rule .tag.mint{background:linear-gradient(135deg,var(--mint),var(--mint-d));}
   .rule .tag.amber{background:linear-gradient(135deg,var(--amber),#C9791B);}
-  .rule .body{font-size:15px;color:var(--ink-2);}
+  .rule .body{font-size:15.5px;color:var(--ink-2);line-height:1.6;}
   .rule .body b{color:var(--ink);}
 
-  table.pts{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);}
-  table.pts th,table.pts td{padding:13px 16px;text-align:left;font-size:14.5px;border-bottom:1px solid var(--line);}
-  table.pts th{background:var(--cream);font-weight:800;color:var(--ink);}
-  table.pts tr:last-child td{border-bottom:none;}
-  table.pts td.amt{font-weight:850;color:var(--mint-d);white-space:nowrap;}
-  table.pts td.amt.minus{color:var(--coral-d);}
-
-  .pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
-  .pill{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:14px;box-shadow:0 8px 22px rgba(120,90,80,.06);}
-  .pill b{color:var(--coral-d);}
-
-  /* footer CTA */
-  .foot-cta{background:radial-gradient(120% 100% at 50% 0%, #3A2440 0%, var(--stage) 60%, #0E0B12 100%);color:#fff;text-align:center;}
-  .foot-cta h2{color:#fff;}
+  /* Footer CTA */
+  .foot-cta{
+    background:radial-gradient(120% 100% at 50% 0%, #3A2440 0%, var(--stage) 60%, #0E0B12 100%);
+    color:#fff;text-align:center;padding:90px 0;
+  }
   .foot-cta .lead{color:rgba(255,255,255,.74);}
-  .foot-cta a.btn-primary{margin-top:8px;}
+  .foot-cta .btn-primary{margin-top:6px;}
+  .foot-note{color:rgba(255,255,255,.48);font-size:12.5px;margin-top:24px;}
 
-  .nav-top{position:absolute;top:22px;left:0;right:0;}
-  .nav-top .wrap{display:flex;justify-content:space-between;align-items:center;}
-  .nav-top .logo{font-weight:900;color:#fff;font-size:18px;letter-spacing:-.02em;}
-  .nav-top a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px;font-weight:600;}
-
-  .twocol-doc{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;}
-  @media(max-width:820px){ .twocol-doc{grid-template-columns:1fr;} }
-
-  /* ---------- Mobile responsive (<=768px) — 纯欢迎页 Landing ---------- */
-  @media (max-width:768px){
-    /* 整站左右留白统一 20px */
-    .wrap{padding-left:20px;padding-right:20px;}
-    section{padding:56px 0;}
-    .twocol-doc{gap:22px;}
-
-    /* 顶部导航：脱离 absolute，回归文档流置顶 */
-    .nav-top{position:static;top:auto;}
-    .nav-top .wrap{padding:14px 20px;}
-
-    /* 首屏 = 整屏欢迎区（100svh）：仅标题 + 主CTA；截图/演示统一在下方第二屏 */
-    .stage{padding:env(safe-area-inset-top, 0px) 0 0;}
-    .stage .wrap{
-      min-height:100vh;min-height:100svh;
-      display:flex;flex-direction:column;justify-content:center;
-      padding:18px 20px calc(36px + env(safe-area-inset-bottom, 0px));
-      text-align:center;
-    }
-    .spotlight{display:none;}
-
-    /* 精简首屏信息密度：隐藏发布标签 / 一句话卖点 / 长描述 / 标签组 / 次按钮 */
-    .badge{display:none;}
-    .hero-sub{display:none;}
-    .hero-desc{display:none;}
-    .hero-meta{display:none;}
-    .btn-ghost{display:none;}
-
-    /* 主标题缩小字号与字重，降低视觉权重 */
-    .brand{font-size:clamp(34px,9vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05;}
-
-    /* 主CTA 满宽、居中 */
-    .cta-row{flex-direction:column;justify-content:center;gap:12px;margin-top:22px;}
-    .btn{width:100%;justify-content:center;font-size:16px;padding:16px 24px;}
-
-    /* 产品截图作为第二屏（首屏下方）展示，响应式缩放 */
-    .phone-hero{margin:30px auto 0;width:90%;max-width:360px;}
+  /* Responsive */
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .phone-wrap{justify-self:center;margin-top:40px;}
+    .feature-grid{grid-template-columns:1fr;}
+    .gallery,.gallery.reverse{grid-template-columns:1fr;direction:ltr;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .nav .links{display:none;}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 18px;}
+    section{padding:60px 0;}
+    .hero{padding:calc(58px + 62px) 0 64px;}
+    .hero .actions{flex-direction:column;}
+    .hero .actions .btn{width:100%;}
+    .phone{max-width:260px;}
+    .float-pill{display:none;}
+    .steps{grid-template-columns:1fr;}
+    .rule{flex-direction:column;gap:10px;}
+    .rule .tag{align-self:flex-start;}
   }
 </style>
 </head>
 <body>
 
-<!-- ============ STAGE HERO ============ -->
-<header class="stage">
-  <div class="nav-top"><div class="wrap">
-    <div class="logo">我ai学习</div>
-    <a href="guide.html">快速上手 →</a>
-  </div></div>
-  <div class="spotlight"></div>
+<!-- Sticky nav -->
+<nav class="nav">
   <div class="wrap">
-    <div class="badge"><span class="dot"></span>2026 考研学习 · 新品发布</div>
-    <h1 class="brand">我ai学习</h1>
-    <div class="hero-sub">把科学记忆法，装进一个轻到没有负担的 App</div>
-    <p class="hero-desc">专为「专硕 095131 农艺与种业（作物方向）」打造。艾宾浩斯复习自动排期、AI 按学科讲题、数据全留在你手机里——不装 App、不联网也能学。</p>
-    <div class="hero-meta">
-      <span>专硕 095131</span>
-      <span>农艺与种业 · 作物方向</span>
-      <span>90 天计划</span>
-      <span>8/2 开跑</span>
+    <a class="logo" href="/"><i>我</i><span>我ai学习</span></a>
+    <div class="links">
+      <a href="#features">特色</a>
+      <a href="#screenshots">演示</a>
+      <a href="#rules">规则</a>
+      <a href="guide.html">手册</a>
+      <a class="btn btn-primary" href="app">立即进入</a>
     </div>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="app.html">立即开始使用 →</a>
-      <a class="btn btn-ghost" href="guide.html">快速上手手册</a>
-    </div>
+  </div>
+</nav>
 
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span>2026 考研 · 新品发布</div>
+        <h1>我ai学习</h1>
+        <p class="tagline">把科学记忆法，装进一个轻到没有负担的 App</p>
+        <p class="desc">专为「专硕 095131 农艺与种业（作物方向）」打造。艾宾浩斯复习自动排期、AI 按学科讲题、错题本与掌握度追踪——数据全留在你手机里，不装 App、不联网也能学。</p>
+        <div class="actions">
+          <a class="btn btn-primary btn-lg" href="app">立即开始学习 →</a>
+          <a class="btn btn-ghost btn-lg" href="guide.html">快速上手手册</a>
+        </div>
+        <div class="meta">
+          <span>专硕 095131</span>
+          <span>农艺与种业</span>
+          <span>90 天计划</span>
+          <span>本地离线可用</span>
+        </div>
       </div>
-<!-- phone hero mockup（移动端作为第二屏展示） -->
-    <div class="phone-hero">
-      <svg class="phone" viewBox="0 0 300 540" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="0" width="300" height="540" rx="34" fill="#16121A"/>
-        <rect x="14" y="14" width="272" height="512" rx="26" fill="#FFF8F2"/>
-        <!-- status bar -->
-        <rect x="14" y="14" width="272" height="34" rx="26" fill="#fff"/>
-        <text x="34" y="36" font-size="11" fill="#2A2320" font-family="sans-serif" font-weight="700">9:41</text>
-        <text x="232" y="36" font-size="10" fill="#2A2320" font-family="sans-serif" font-weight="700">信号 · 100%</text>
-        <!-- hero card -->
-        <rect x="26" y="58" width="248" height="186" rx="20" fill="#FF6B8A"/>
-        <rect x="38" y="72" width="92" height="22" rx="11" fill="#ffffff" opacity=".22"/>
-        <text x="48" y="87" font-size="11" fill="#fff" font-family="sans-serif" font-weight="700">第 2 天 · Day 2</text>
-        <text x="38" y="112" font-size="11" fill="#fff" opacity=".92" font-family="sans-serif">距离考研还有 142 天</text>
-        <text x="38" y="138" font-size="18" fill="#fff" font-family="sans-serif" font-weight="850">今天按计划继续学习</text>
-        <text x="38" y="158" font-size="10.5" fill="#fff" opacity=".9" font-family="sans-serif">基础阶段 · 教材通读期</text>
-        <!-- 学习目标 banner -->
-        <rect x="38" y="168" width="212" height="30" rx="12" fill="#ffffff" opacity=".16"/>
-        <rect x="46" y="175" width="58" height="16" rx="8" fill="#fff"/>
-        <text x="54" y="187" font-size="9.5" fill="#E8557A" font-family="sans-serif" font-weight="800">学习目标</text>
-        <text x="112" y="187" font-size="9.5" fill="#fff" font-family="sans-serif" font-weight="700">专硕 · 095131 农艺与种业</text>
-        <!-- today prog pill -->
-        <rect x="26" y="254" width="248" height="26" rx="13" fill="#fff" stroke="#F0E4DD"/>
-        <text x="40" y="271" font-size="10.5" fill="#6B5F59" font-family="sans-serif">今日待学 <tspan fill="#2A2320" font-weight="800">4</tspan> 个任务 · 已完成 <tspan fill="#2A2320" font-weight="800">1</tspan></text>
-        <!-- task rows -->
-        <g font-family="sans-serif">
-          <rect x="26" y="290" width="248" height="40" rx="12" fill="#fff" stroke="#F0E4DD"/>
-          <circle cx="44" cy="310" r="8" fill="#7FC8A9"/><path d="M40 310l3 3 5-6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="62" y="314" font-size="11" fill="#2A2320" font-weight="700">339 农综一A · 植物细胞</text>
-          <rect x="26" y="338" width="248" height="40" rx="12" fill="#fff" stroke="#F0E4DD"/>
-          <circle cx="44" cy="358" r="8" fill="#fff" stroke="#E8557A" stroke-width="2"/>
-          <text x="62" y="362" font-size="11" fill="#2A2320" font-weight="700">881 栽培育种 · 育种方法</text>
-          <rect x="26" y="386" width="248" height="40" rx="12" fill="#fff" stroke="#F0E4DD"/>
-          <circle cx="44" cy="406" r="8" fill="#fff" stroke="#E8557A" stroke-width="2"/>
-          <text x="62" y="410" font-size="11" fill="#2A2320" font-weight="700">政治 101 · 马原导论</text>
-          <rect x="26" y="434" width="248" height="40" rx="12" fill="#fff" stroke="#F0E4DD"/>
-          <circle cx="44" cy="454" r="8" fill="#fff" stroke="#E8557A" stroke-width="2"/>
-          <text x="62" y="458" font-size="11" fill="#2A2320" font-weight="700">英语二 204 · 长难句</text>
-        </g>
-        <!-- tabbar -->
-        <rect x="14" y="492" width="272" height="34" rx="0" fill="#fff" opacity=".9"/>
-        <text x="60" y="513" font-size="9" fill="#FF6B8A" font-family="sans-serif" font-weight="800">今日</text>
-        <text x="140" y="513" font-size="9" fill="#9A8E88" font-family="sans-serif">考试历</text>
-        <text x="210" y="513" font-size="9" fill="#9A8E88" font-family="sans-serif">题库</text>
-      </svg>
+      <div class="phone-wrap">
+        <div class="phone">
+          <img src="assets/shot-today.webp" alt="我ai学习 今日学习界面" width="780" height="1688" loading="eager">
+        </div>
+        <div class="float-pill ear"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B8A" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 今日待学自动排好</div>
+        <div class="float-pill day"><b>Day 3</b> · 已进入学习节奏</div>
+      </div>
     </div>
-
+  </div>
 </header>
 
-<!-- ============ SECTION 01 — 学习效率（优先） ============ -->
-<section id="sec1">
-  <div class="wrap">
-    <div class="center">
-      <div class="sec-no">01 / 学习效率</div>
-      <h2 class="title">不是更努力，而是更会记</h2>
-      <p class="lead">考研要背的东西又多又杂。死记硬背最大的敌人是「遗忘」——而遗忘，是有规律的。我们把这条规律做进了产品的每一天。</p>
-    </div>
-
-    <div class="twocol-doc" style="margin-top:40px;">
-      <div>
-        <h3 style="font-size:22px;font-weight:850;margin:0 0 10px;">科学原理：艾宾浩斯遗忘曲线</h3>
-        <p style="color:var(--ink-2);font-size:15.5px;margin:0 0 18px;">德国心理学家艾宾浩斯发现：新学的知识如果不复习，1 天后只剩约 33%，6 天后几乎全忘。但在「刚好快忘」的时间点复习，记忆会被重新加固，遗忘速度越来越慢。关键复习节点约为：<b>学完后的第 1、3、7、15、30 天</b>。</p>
-        <div class="curve-wrap">
-          <svg viewBox="0 0 460 200" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-            <line x1="40" y1="170" x2="440" y2="170" stroke="#E7D8CF" stroke-width="2"/>
-            <line x1="40" y1="20" x2="40" y2="170" stroke="#E7D8CF" stroke-width="2"/>
-            <path d="M40 40 C 90 60, 120 110, 160 140 C 220 165, 300 168, 440 169" fill="none" stroke="#FF6B8A" stroke-width="3.5" stroke-linecap="round"/>
-            <path d="M40 150 C 90 120, 130 95, 175 80 C 250 58, 340 50, 440 48" fill="none" stroke="#7FC8A9" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/>
-            <circle cx="40" cy="150" r="4" fill="#7FC8A9"/>
-            <circle cx="175" cy="80" r="4" fill="#7FC8A9"/>
-            <circle cx="300" cy="62" r="4" fill="#7FC8A9"/>
-            <text x="44" y="165" font-size="11" fill="#9A8E88">学完当天</text>
-            <text x="250" y="60" font-size="12" fill="#2E7D52" font-weight="800">按时复习 → 记忆被加固</text>
-            <text x="120" y="120" font-size="12" fill="#E8557A" font-weight="700">不复习 → 快速遗忘</text>
-          </svg>
-          <div class="step-pills">
-            <span>第 <b>1</b> 天</span><span>第 <b>3</b> 天</span><span>第 <b>7</b> 天</span><span>第 <b>15</b> 天</span><span>第 <b>30</b> 天</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:22px;font-weight:850;margin:0 0 10px;">产品里怎么实现？</h3>
-        <div class="card" style="margin-bottom:14px;">
-          <h3 style="font-size:17px;">① 自动复习排期</h3>
-          <p>每掌握一个知识点，系统按 <b>1 / 3 / 7 / 15 / 30 天</b> 自动生成复习任务，到期当天在「待复习」清单里提醒你，不用自己记日程。</p>
-        </div>
-        <div class="card" style="margin-bottom:14px;">
-          <h3 style="font-size:17px;">② 掌握度 0–100 可视化</h3>
-          <p>每个知识点都有实时掌握度：基础 60 分，每次准时复习 +8，答错 -4，久不复习缓慢衰减。绿色进度条 + 小乌龟陪你跑到「已掌握」。</p>
-        </div>
-        <div class="card">
-          <h3 style="font-size:17px;">③ 状态一眼看清</h3>
-          <p>未学习 / 薄弱 / 待复习 / 学习中 / 已掌握，五种状态自动标注，薄弱项优先补，复习不漏网。</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid g2" style="margin-top:34px;align-items:center;">
-      <figure class="shot">
-        <div class="shot-frame">
-          <svg class="phone" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0" y="0" width="300" height="380" rx="22" fill="#FFF8F2"/>
-            <text x="22" y="38" font-size="16" fill="#2A2320" font-family="sans-serif" font-weight="850">待复习</text>
-            <text x="92" y="38" font-size="12" fill="#FF6B8A" font-family="sans-serif" font-weight="700">3 个知识点</text>
-            <g font-family="sans-serif">
-              <rect x="18" y="56" width="264" height="64" rx="14" fill="#fff" stroke="#F0E4DD"/>
-              <circle cx="40" cy="88" r="14" fill="#7FC8A9"/>
-              <text x="66" y="82" font-size="12.5" fill="#2A2320" font-weight="800">339 农综一A</text>
-              <text x="66" y="102" font-size="11" fill="#6B5F59">植物细胞结构 · 第 3 天该复习</text>
-              <rect x="226" y="74" width="44" height="26" rx="13" fill="#7FC8A9"/>
-              <text x="234" y="91" font-size="10" fill="#fff" font-weight="800">去复习</text>
-              <rect x="18" y="132" width="264" height="64" rx="14" fill="#fff" stroke="#F0E4DD"/>
-              <circle cx="40" cy="164" r="14" fill="#E9A23B"/>
-              <text x="66" y="158" font-size="12.5" fill="#2A2320" font-weight="800">881 栽培育种</text>
-              <text x="66" y="178" font-size="11" fill="#6B5F59">育种方法 · 第 7 天该复习</text>
-              <rect x="226" y="150" width="44" height="26" rx="13" fill="#7FC8A9"/>
-              <text x="234" y="167" font-size="10" fill="#fff" font-weight="800">去复习</text>
-              <rect x="18" y="208" width="264" height="64" rx="14" fill="#fff" stroke="#F0E4DD"/>
-              <circle cx="40" cy="240" r="14" fill="#FF6B8A"/>
-              <text x="66" y="234" font-size="12.5" fill="#2A2320" font-weight="800">英语二 204</text>
-              <text x="66" y="254" font-size="11" fill="#6B5F59">长难句拆解 · 薄弱，优先</text>
-              <rect x="226" y="226" width="44" height="26" rx="13" fill="#7FC8A9"/>
-              <text x="234" y="243" font-size="10" fill="#fff" font-weight="800">去复习</text>
-            </g>
-            <rect x="18" y="290" width="264" height="64" rx="14" fill="#FFF6F1" stroke="#F0E4DD"/>
-            <text x="34" y="316" font-size="11.5" fill="#6B5F59" font-family="sans-serif">掌握度进度</text>
-            <rect x="34" y="326" width="232" height="12" rx="6" fill="#eee"/>
-            <rect x="34" y="326" width="150" height="12" rx="6" fill="#7FC8A9"/>
-            <text x="34" y="346" font-size="9.5" fill="#9A8E88" font-family="sans-serif">64% · 小乌龟陪你跑到已掌握</text>
-          </svg>
-        </div>
-        <figcaption>「待复习」清单：到期知识点自动弹出，掌握度一目了然</figcaption>
-      </figure>
-      <div>
-        <div class="kicker">真实界面截图</div>
-        <h3 style="font-size:20px;font-weight:850;margin:10px 0 8px;">每天打开，该复习什么它都帮你排好了</h3>
-        <p style="color:var(--ink-2);font-size:15.5px;">你只管按清单学，复习节奏交给系统。不用再拿 Excel 手算「今天该复习第几天的」，也不用担心背了又忘——因为系统会在你「快要忘」的那天，准时把它推回你面前。</p>
-        <p style="color:var(--ink-2);font-size:15.5px;margin-top:12px;">配合「让 AI 教你」一键生成讲题提示词（政治画概念关系图、英语拆长难句、农综画遗传关系图……按学科自适应），理解 + 复习双管齐下。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SECTION 02 — 三大特色 ============ -->
-<section id="sec2" class="alt">
-  <div class="wrap">
-    <div class="center">
-      <div class="sec-no">02 / 核心特色</div>
-      <h2 class="title">本地化 · 定制化 · 轻量化</h2>
-      <p class="lead">三个词，定义了它和市面上其它备考工具的本质区别。</p>
-    </div>
-    <div class="grid g3" style="margin-top:38px;">
-      <div class="card feat l">
-        <div class="ic">本</div>
+<!-- Features -->
+<section id="features">
+  <div class="wrap center">
+    <div class="sec-no">核心特色</div>
+    <h2 class="title">本地化 · 定制化 · 轻量化</h2>
+    <p class="lead">三个词，定义了它和市面上其它备考工具的本质区别。</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="ic ic-mint">本</div>
         <h3>本地化</h3>
-        <p>数据全存在你的浏览器里，不上传任何服务器；离线也能学，隐私完全在你手上。</p>
+        <p>数据全存在浏览器 LocalStorage，不上传服务器；PWA 离线缓存，信号差也能学。</p>
         <ul>
-          <li>LocalStorage 本地保存，刷新关闭都不丢</li>
-          <li>PWA 离线缓存，地铁/信号差也能刷</li>
-          <li>中文界面，贴合国内考研科目与教材</li>
-          <li>「考试历」按 8–10 月真实备考节奏设计</li>
+          <li>刷新/关闭/断网都不丢数据</li>
+          <li>一键导出 JSON 备份</li>
+          <li>换设备可导入恢复</li>
         </ul>
       </div>
-      <div class="card feat c">
-        <div class="ic">定</div>
+      <div class="feature-card">
+        <div class="ic ic-coral">定</div>
         <h3>定制化</h3>
-        <p>不是通用模板，而是为你的目标专门搭好的学习系统。</p>
+        <p>不是通用题库，而是为你的目标科目搭好的学习系统。</p>
         <ul>
-          <li>科目锁定「专硕 095131 农艺与种业（作物方向）」</li>
-          <li>4 门科目 + 对应教材，知识点全量可查</li>
-          <li>AI 讲题按学科自适应（结构图/流程图/关系图）</li>
-          <li>每日可写备注与学习计划，节奏自己调</li>
+          <li>科目锁定 095131 作物方向</li>
+          <li>4 门科目 + 90 天计划</li>
+          <li>AI 讲题按学科自适应</li>
         </ul>
       </div>
-      <div class="card feat w">
-        <div class="ic">轻</div>
+      <div class="feature-card">
+        <div class="ic ic-amber">轻</div>
         <h3>轻量化</h3>
-        <p>一个网页文件，即开即用，不占空间、不折腾。</p>
+        <p>一个网页文件，即开即用。添加到主屏幕，秒变原生 App 体验。</p>
         <ul>
-          <li>单文件 HTML，零框架零安装</li>
-          <li>可「添加到主屏幕」，秒变原生 App 体验</li>
-          <li>体积小、加载快，老旧手机也流畅</li>
-          <li>无广告、无推送骚扰，纯净专注</li>
+          <li>零框架、零安装</li>
+          <li>体积小、加载快</li>
+          <li>无广告、无推送骚扰</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ SECTION 03 — 设计亮点 ============ -->
-<section id="sec3">
+<!-- Screenshots -->
+<section id="screenshots" class="alt">
   <div class="wrap">
     <div class="center">
-      <div class="sec-no">03 / 设计亮点</div>
-      <h2 class="title">每一个小细节，都为「能坚持」服务</h2>
-      <p class="lead">下面这些产品里的小亮点，单看不起眼，合在一起就是你愿意每天回来打开它的理由。</p>
+      <div class="sec-no">真实界面</div>
+      <h2 class="title">不是概念图，是你打开后看到的样子</h2>
+      <p class="lead">下面每张图都是从实际 App 中截取，首屏入口、学习计划、题库、个人中心，一一对应。</p>
     </div>
-    <div class="hl-grid" style="margin-top:36px;">
 
-      <div class="card"><div class="hl">
-        <div class="badge-num">1</div>
-        <div><h4>首页「学习目标」常驻</h4><p>卡片顶部固定展示你的报考目标（专硕 095131 农艺与种业），每次打开都先看见「为什么而学」。</p></div>
-      </div></div>
+    <div class="gallery">
+      <figure class="shot">
+        <img src="assets/shot-today.webp" alt="今日学习：Hero 卡片 + 今日任务 + 快速上手" loading="lazy" width="780" height="1688">
+        <figcaption>今日学习：目标、任务、快速入口一站聚合</figcaption>
+      </figure>
+      <div class="text">
+        <div class="kicker">真实界面</div>
+        <h3>打开就知道今天该学什么</h3>
+        <p>首页 Hero 卡片常驻你的学习目标，下方列出今日待学任务。每个知识点闯关通过即算掌握，打卡、积分、复习节奏自动推进。</p>
+        <p>无需自己排日程，系统按艾宾浩斯曲线在「快忘」的时间点把知识点推回你面前。</p>
+        <a class="btn btn-outline" href="app">亲自体验一下 →</a>
+      </div>
+    </div>
 
-      <div class="card"><div class="hl">
-        <div class="badge-num">2</div>
-        <div><h4>考试历 + 补卡机制</h4><p>缺卡日可回溯补卡，但必须先补齐当日学习任务，发正常积分的一半——既容错，又不放水。</p></div>
-      </div></div>
+    <div class="gallery reverse" style="margin-top:70px;">
+      <div class="text">
+        <div class="kicker">考试历</div>
+        <h3>90 天计划，哪天该学什么一目了然</h3>
+        <p>「考试历」把整季备考拆成基础、强化、冲刺三个阶段。点任意一天即可查看任务、补卡或查看完成情况，节奏完全透明。</p>
+        <p>支持补卡回溯：漏掉的学习日可以补齐，但必须先完成当日任务——既容错，又不放水。</p>
+      </div>
+      <figure class="shot">
+        <img src="assets/shot-plan.webp" alt="考试历：90 天备考计划" loading="lazy" width="780" height="1688">
+        <figcaption>考试历：阶段划分 + 每日任务 + 补卡入口</figcaption>
+      </figure>
+    </div>
 
-      <div class="card"><div class="hl">
-        <div class="badge-num">3</div>
-        <div><h4>让 AI 教你（一键抄送）</h4><p>点一下生成结构化讲题提示词，按学科自动适配可视化方式，直接丢给任意 AI 就能开讲。</p></div>
-      </div></div>
+    <div class="gallery" style="margin-top:70px;">
+      <figure class="shot">
+        <img src="assets/shot-kp.webp" alt="题库：按科目筛选知识点" loading="lazy" width="780" height="1688">
+        <figcaption>题库：全站搜索 + 状态筛选 + 一键让 AI 讲题</figcaption>
+      </figure>
+      <div class="text">
+        <div class="kicker">题库</div>
+        <h3>207 个知识点，全站可搜、可按状态筛选</h3>
+        <p>按学科浏览，或搜索关键词快速定位。每个知识点都标注「未学习 / 学习中 / 已掌握 / 薄弱 / 待复习」状态，薄弱项优先补。</p>
+        <p>点击「让 AI 教我」自动生成按学科适配的讲题提示词，政治画概念图、英语拆长难句、农综画遗传关系图。</p>
+      </div>
+    </div>
 
-      <div class="card"><div class="hl">
-        <div class="badge-num">4</div>
-        <div><h4>闯关式检测</h4><p>学完即闯关，5 题答对 4 题过关；没有手写题库的知识点，系统会自动生成题目，保证随时可测。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">5</div>
-        <div><h4>错题本 + 薄弱追踪</h4><p>答错的题自动入册，知识点标记为「薄弱」并优先排进复习，精准补弱不瞎练。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">6</div>
-        <div><h4>掌握度 0–100</h4><p>用进度条 + 小乌龟把抽象的记忆牢固度画出来，看得见自己的进步。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">7</div>
-        <div><h4>专注准备弹窗</h4><p>开工前一句鼓励 + 三件小事提醒，帮你更快进入心流，减少「打开又划走」。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">8</div>
-        <div><h4>积分 · 成就 · 兑换</h4><p>学习能攒分，奶茶/大餐/礼物随心兑，阶段成就一路点亮，坚持有正反馈。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">9</div>
-        <div><h4>月假 &amp; 轻松一下</h4><p>每月免费 2 次「月假」：当天随机保留 2 科、其余免除；另有积分兑换的「轻松一下」（300 分）当日任务减半。状态低迷的日子也能不断签，降低放弃率。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">10</div>
-        <div><h4>全站搜索</h4><p>知识点 / 错题 / 科目一键搜，90 天内容全量可查，不翻页也能定位。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">11</div>
-        <div><h4>数据导出 / 导入备份</h4><p>本地数据一键导出 JSON，换设备再导入恢复，学习记录永不丢。</p></div>
-      </div></div>
-
-      <div class="card"><div class="hl">
-        <div class="badge-num">12</div>
-        <div><h4>原生级移动体验</h4><p>禁用橡皮筋滚动、适配刘海安全区、按真实视口高度布局，手机上像真 App 一样跟手。</p></div>
-      </div></div>
-
+    <div class="gallery reverse" style="margin-top:70px;">
+      <div class="text">
+        <div class="kicker">我的</div>
+        <h3>积分、成就、错题本、数据备份全在这里</h3>
+        <p>学习攒分可兑换奶茶/大餐/轻松一下；错题自动入册并标记薄弱；打卡数据随时导出 JSON，换机不丢记录。</p>
+      </div>
+      <figure class="shot">
+        <img src="assets/shot-mine.webp" alt="我的：积分、错题本、设置" loading="lazy" width="780" height="1688">
+        <figcaption>我的：积分成就 + 错题本 + 导入导出</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ============ SECTION 04 — 打卡规则 ============ -->
-<section id="sec4" class="alt">
-  <div class="wrap">
-    <div class="center">
-      <div class="sec-no">04 / 打卡规则</div>
-      <h2 class="title">打卡怎么算？一目了然</h2>
-      <p class="lead">规则简单透明：当天任务全做完 = 打卡成功；万一漏了，也给你留了补救通道。</p>
+<!-- How it works -->
+<section>
+  <div class="wrap center">
+    <div class="sec-no">使用路径</div>
+    <h2 class="title">四步进入学习状态</h2>
+    <p class="lead">不需要注册、不需要配置，打开网页就能开始。</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h4>打开网页</h4><p>访问 study.ninkoro.com，一键添加到主屏幕。</p></div>
+      <div class="step"><div class="num">2</div><h4>查看今日</h4><p>首页自动显示今天该学的知识点。</p></div>
+      <div class="step"><div class="num">3</div><h4>闯关掌握</h4><p>学完即测，5 题答对 4 题算通过。</p></div>
+      <div class="step"><div class="num">4</div><h4>按时复习</h4><p>系统自动按遗忘曲线排期，到期提醒。</p></div>
     </div>
-    <div class="rules" style="margin-top:34px;max-width:880px;margin-left:auto;margin-right:auto;">
+  </div>
+</section>
+
+<!-- Rules -->
+<section id="rules" class="alt">
+  <div class="wrap center">
+    <div class="sec-no">打卡规则</div>
+    <h2 class="title">打卡怎么算？一目了然</h2>
+    <p class="lead">规则简单透明：当天任务全做完 = 打卡成功；漏了也能补，但必须先学完。</p>
+    <div class="rules">
       <div class="rule">
         <div class="tag">每日打卡</div>
-        <div class="body">系统为每一天安排了固定学习任务（知识点）。当你把<b>当日所有任务对应的知识点都掌握</b>（闯关通过），这一天自动标记为「已打卡」。</div>
+        <div class="body">系统为每一天安排了固定学习任务。把<b>当日所有任务对应的知识点都掌握</b>（闯关通过），这一天自动标记为「已打卡」。</div>
       </div>
       <div class="rule">
         <div class="tag mint">连续打卡</div>
-        <div class="body">连续打卡天数记为「连胜」。连胜 <b>≥ 3 天</b>后，每日打卡奖励享受 <b>1.5 倍</b>加成，鼓励你别断。</div>
+        <div class="body">连续打卡天数记为「连胜」。连胜 <b>≥ 3 天</b>后，每日打卡奖励享受 <b>1.5 倍</b>加成。</div>
       </div>
       <div class="rule">
-        <div class="tag amber">补卡（缺卡回溯）</div>
-        <div class="body">过去、计划内、且尚未领奖的「缺卡」日可发起补卡，<b>每人每天限一次</b>。系统会先校验当日任务是否全部完成：<br>
-        · 未完成 → <b>禁止直接补卡</b>，引导你去知识点页补齐，全部完成后再补；<br>
-        · 全部完成 → 确认后即标记为「已打卡（补）」，发放<b>正常积分的一半</b>。</div>
+        <div class="tag amber">补卡机制</div>
+        <div class="body">过去、计划内、且尚未领奖的「缺卡」日可补卡，<b>每人每天限一次</b>。未完成当日任务禁止直接补卡，全部完成后发放<b>正常积分的一半</b>。</div>
       </div>
       <div class="rule">
-        <div class="tag">恶意打卡</div>
-        <div class="body">闯关<b>两次未通过</b>视为未认真学，本次不记掌握并扣 <b>20 分</b>，请踏实复习后次日再来。这是防划水的护栏，不是惩罚。</div>
-      </div>
-    </div>
-    <p style="text-align:center;color:var(--ink-3);font-size:13.5px;margin-top:22px;">补卡通道只在「过去且计划内」的缺卡日开放，今天和未来不可补——今天的任务，今天就要做。</p>
-  </div>
-</section>
-
-<!-- ============ SECTION 05 — 积分规则 ============ -->
-<section id="sec5">
-  <div class="wrap">
-    <div class="center">
-      <div class="sec-no">05 / 积分规则</div>
-      <h2 class="title">积分从哪里来，到哪里去</h2>
-      <p class="lead">每一分都对应真实的学习动作。攒分不是为了数字，是为了把「坚持」变成看得到的奖励。</p>
-    </div>
-
-    <div class="grid g2" style="margin-top:34px;align-items:start;">
-      <div>
-        <h3 style="font-size:19px;font-weight:850;margin:0 0 12px;">积分获取</h3>
-        <table class="pts">
-          <thead><tr><th>动作</th><th>得分</th></tr></thead>
-          <tbody>
-            <tr><td>掌握 1 个知识点（闯关通过）</td><td class="amt">+10</td></tr>
-            <tr><td>当日任务全部完成打卡</td><td class="amt">+20</td></tr>
-            <tr><td>连胜 ≥ 3 天时的打卡奖励</td><td class="amt">×1.5（即 +30）</td></tr>
-            <tr><td>补卡成功（正常的一半）</td><td class="amt">+10 / +15</td></tr>
-            <tr><td>闯关两次未通过（恶意打卡）</td><td class="amt minus">−20</td></tr>
-          </tbody>
-        </table>
-
-        <h3 style="font-size:19px;font-weight:850;margin:26px 0 12px;">积分兑换</h3>
-        <div class="pill-row">
-          <div class="pill">一杯奶茶 · <b>100 分</b></div>
-          <div class="pill">一顿大餐 · <b>300 分</b></div>
-          <div class="pill">轻松一下（今日任务减半）· <b>300 分</b></div>
-          <div class="pill">心仪小礼物 · <b>1000 分</b></div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:19px;font-weight:850;margin:0 0 12px;">成就徽章</h3>
-        <div class="pill-row">
-          <div class="pill">初心萌芽 · <b>50</b></div>
-          <div class="pill">渐入佳境 · <b>200</b></div>
-          <div class="pill">勤学不辍 · <b>500</b></div>
-          <div class="pill">考研学霸 · <b>1000</b></div>
-          <div class="pill">阶段·基础完成（30 天）</div>
-          <div class="pill">阶段·强化完成（60 天）</div>
-          <div class="pill">金榜题名（90 天全打卡）</div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3 style="font-size:16px;">小贴士</h3>
-          <p>「轻松一下」每月可兑有限次，专治状态低迷日；阶段成就按自然天数自动点亮，不用手动领。积分可随时在「我的 → 积分 & 成就」查看明细与流水。</p>
-        </div>
+        <div class="tag">防划水</div>
+        <div class="body">闯关<b>两次未通过</b>视为未认真学，本次不记掌握并扣 <b>20 分</b>。这是护栏，不是惩罚。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ FOOTER CTA ============ -->
+<!-- Footer CTA -->
 <section class="foot-cta">
   <div class="wrap">
     <div class="sec-no" style="color:var(--coral);">现在开始</div>
-    <h2 class="title">90 天，从 8 月 2 日开始</h2>
-    <p class="lead">一个网页，装下你的整个备考节奏。本地保存、离线可用、按你的目标定制——打开就能学，学完就有迹可循。</p>
-    <a class="btn btn-primary" href="app.html">立即开始使用 →</a>
-    <p style="color:rgba(255,255,255,.5);font-size:12.5px;margin-top:26px;">我ai学习 · 专硕 095131 农艺与种业（作物方向） · 考研备考伴侣</p>
+    <h2 class="title">90 天，从打开这一刻开始</h2>
+    <p class="lead">一个网页，装下你的整个备考节奏。本地保存、离线可用、按你的目标定制——学完就有迹可循。</p>
+    <a class="btn btn-primary btn-lg" href="app">立即开始学习 →</a>
+    <p class="foot-note">我ai学习 · 专硕 095131 农艺与种业（作物方向） · 考研备考伴侣</p>
   </div>
 </section>
 

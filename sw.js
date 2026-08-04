@@ -1,5 +1,5 @@
 // 我ai学习 — Service Worker (app-shell offline cache)
-const CACHE = 'kycg-v40';
+const CACHE = 'kycg-v41';
 const SHELL = [
   'app.html',
   'index.html',
@@ -17,7 +17,11 @@ const SHELL = [
   'splash-828-1792.png',
   'splash-750-1334.png',
   'splash-1668-2388.png',
-  'splash-2048-2732.png'
+  'splash-2048-2732.png',
+  'assets/shot-today.webp',
+  'assets/shot-plan.webp',
+  'assets/shot-kp.webp',
+  'assets/shot-mine.webp'
 ];
 
 self.addEventListener('install', function (e) {
