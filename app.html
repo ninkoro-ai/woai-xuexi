@@ -7511,7 +7511,7 @@
   _appRendered = true;
   // #prepOverlay 在本脚本之后才解析，故延迟到解析完成后弹「专注提醒」（每日一次）
   setTimeout(maybeShowFocusReminder, 0);
-  if('serviceWorker' in navigator){ window.addEventListener('load', function(){ try{ navigator.serviceWorker.register('sw.js?v=49'); }catch(e){} }); }
+  if('serviceWorker' in navigator){ window.addEventListener('load', function(){ try{ navigator.serviceWorker.register('sw.js?v=50'); }catch(e){} }); }
 
   // ---- 错误边界（Error Boundary）：崩溃时显示可恢复的错误面板，而非白屏/巨大"!" ----
   var _appRendered;

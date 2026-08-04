@@ -29,6 +29,10 @@
     --gut:clamp(18px,4.4vw,32px);
     --sec-y:clamp(72px,11vw,132px);
     --ease:cubic-bezier(.22,1,.36,1);
+    /* 统一动效时长体系：按压最利落、悬浮/载入居中，全部共用 --ease 单一缓动语言 */
+    --dur-press:.14s;
+    --dur-hover:.34s;
+    --dur-reveal:.64s;
     --nav-h:60px;
   }
 
@@ -105,10 +109,12 @@
     font-size:clamp(15px,1.8vw,16.5px);font-weight:800;
     padding:clamp(14px,2.2vw,17px) clamp(24px,4vw,34px);
     border-radius:999px;border:1px solid transparent;
-    transition:transform .16s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease),border-color .2s var(--ease);
+    transition:transform var(--dur-press) var(--ease),box-shadow var(--dur-hover) var(--ease),background-color var(--dur-hover) var(--ease),border-color var(--dur-hover) var(--ease);
     cursor:pointer;white-space:nowrap;line-height:1.2;
+    will-change:transform;
   }
-  .btn:active{transform:scale(.975);}
+  /* 按压即时反馈：pointer-down 即响应，且用同一缓动语言 */
+  .btn:active{transform:scale(.96);transition-duration:var(--dur-press);}
   .btn:focus-visible{outline:2px solid var(--coral-2);outline-offset:3px;}
   .btn-primary{
     background:linear-gradient(135deg,var(--coral-2),var(--coral));
@@ -220,6 +226,17 @@
   .scroll-hint svg{opacity:.6;animation:bob 2.1s var(--ease) infinite;}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
+  /* 首屏载入序列：统一缓动 + 同向上升，制造「元素依次载入」的连贯节奏 */
+  @keyframes heroIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  .hero .wrap > *{animation:heroIn var(--dur-reveal) var(--ease) both;}
+  .hero .wrap > *:nth-child(1){animation-delay:.04s}
+  .hero .wrap > *:nth-child(2){animation-delay:.12s}
+  .hero .wrap > *:nth-child(3){animation-delay:.20s}
+  .hero .wrap > *:nth-child(4){animation-delay:.28s}
+  .hero .wrap > *:nth-child(5){animation-delay:.36s}
+  .hero .wrap > *:nth-child(6){animation-delay:.44s}
+  .hero .wrap > *:nth-child(7){animation-delay:.52s}
+
   /* ============ Numbers band ============ */
   .band-dark{
     position:relative;isolation:isolate;
@@ -245,7 +262,7 @@
     border:1px solid var(--hairline);border-radius:20px;
     background:rgba(255,255,255,.032);
     text-align:center;min-width:0;
-    transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);
+    transition:border-color var(--dur-hover) var(--ease),background-color var(--dur-hover) var(--ease),transform var(--dur-hover) var(--ease);
   }
   .stat:hover{border-color:rgba(255,107,138,.42);background:rgba(255,107,138,.06);transform:translateY(-3px);}
   .stat .n{
@@ -334,7 +351,7 @@
     position:relative;min-width:0;color:var(--on-dark);
     background:rgba(255,255,255,.05);border:1px solid var(--hairline);border-radius:20px;
     padding:clamp(20px,3vw,28px) clamp(16px,2.4vw,22px);
-    transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+    transition:transform var(--dur-hover) var(--ease),box-shadow var(--dur-hover) var(--ease),background-color var(--dur-hover) var(--ease);
   }
   .step:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,0,0,.28);background:rgba(255,255,255,.08);}
   .step .num{
@@ -392,8 +409,8 @@
   .foot-note a{color:var(--on-dark-2);text-decoration:underline;text-underline-offset:3px;}
 
   /* ============ Reveal (渐入, 无 JS 时默认可见) ============ */
-  .js .reveal{opacity:0;transform:translateY(20px);}
-  .js .reveal.in{opacity:1;transform:none;transition:opacity .66s var(--ease),transform .66s var(--ease);}
+  .js .reveal{opacity:0;transform:translateY(18px) scale(.985);}
+  .js .reveal.in{opacity:1;transform:none;transition:opacity var(--dur-reveal) var(--ease),transform var(--dur-reveal) var(--ease);will-change:transform,opacity;}
 
   /* ============ Responsive ============ */
   @media (max-width:900px){
@@ -427,9 +444,16 @@
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
-    .js .reveal{opacity:1;transform:none;}
+    .js .reveal{opacity:1!important;transform:none!important;transition:none!important;transition-delay:0!important;}
     .scroll-hint svg{animation:none;}
-    .btn,.stat,.step{transition:none;}
+    .btn,.stat,.step,.ai-card,.rule{transition:none!important;will-change:auto!important;}
+    .hero .wrap > *{animation:none!important;opacity:1!important;transform:none!important;}
+  }
+  /* 降低透明度偏好：玻璃材质转更实、去掉模糊，避免可读性下降 */
+  @media (prefers-reduced-transparency:reduce){
+    .nav{background:rgba(15,7,32,.94);-webkit-backdrop-filter:none;backdrop-filter:none;}
+    .step,.rule,.stat,.ai-card{background:rgba(255,255,255,.10);-webkit-backdrop-filter:none;backdrop-filter:none;}
+    .ambient{opacity:.45;}
   }
 </style>
 </head>
@@ -636,9 +660,14 @@
   }
   var io = new IntersectionObserver(function(entries){
     for(var i=0;i<entries.length;i++){
+      var t=entries[i].target;
       if(entries[i].isIntersecting){
-        entries[i].target.classList.add('in');
-        io.unobserve(entries[i].target);
+        // 同一容器内按文档顺序级联延迟，制造「成片载入」的连贯节奏（统一缓动语言）
+        var p=t.parentElement, sibs=p?p.querySelectorAll('.reveal'):null, idx=0;
+        if(sibs){for(var j=0;j<sibs.length;j++){if(sibs[j]===t){idx=j;break;}}}
+        t.style.transitionDelay=(Math.min(idx,8)*60)+'ms';
+        t.classList.add('in');
+        io.unobserve(t);
       }
     }
   }, {rootMargin:'0px 0px -8% 0px', threshold:0.01});
