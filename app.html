@@ -685,6 +685,17 @@
   .overlay .btn.primary{width:100%;margin-top:18px;}
   /* 专注准备弹窗 */
   #prepOverlay .modal{max-width:360px;}
+
+  /* 错误边界面板（Error Boundary）：崩溃时显示可恢复的错误信息，而非白屏/巨大"!" */
+  #fatalError{ z-index:600; background:rgba(40,20,28,.6); }
+  .modal.fatal{ max-width:420px; text-align:left; }
+  .modal.fatal h2{ margin:0 0 6px; font-size:19px; color:#E8557A; }
+  .modal.fatal .sub{ margin:0 0 12px; font-size:13.5px; color:var(--ink-3,#9A8E88); line-height:1.6; }
+  .fatal-msg{ background:#2A171C; color:#FFB3C1; font-size:12px; line-height:1.5; padding:12px; border-radius:12px;
+    max-height:200px; overflow:auto; white-space:pre-wrap; word-break:break-word; margin:0 0 14px;
+    font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .fatal-acts{ display:flex; gap:10px; }
+  .fatal-acts .btn{ flex:1; justify-content:center; }
   .prep-enc{background:linear-gradient(135deg,var(--peach-soft),#fff);border:1.5px solid var(--peach);border-radius:14px;padding:14px 16px;margin:2px 0 16px;font-size:14px;line-height:1.6;color:var(--ink);text-align:center;font-weight:600;}
   .prep-enc::before{content:"今日鼓励";display:block;font-size:11px;font-weight:700;color:var(--coral);letter-spacing:.12em;margin-bottom:4px;opacity:.85;}
   .prep-tips{list-style:none;margin:14px 0 2px;padding:0;}
@@ -1994,7 +2005,28 @@
     s.prepShown = typeof s.prepShown==='string' ? s.prepShown : '';
     return s;
   }
-  normalizeState(S);
+  // ---- 数据版本化 + 迁移（用户升级版本 → 老数据 → 新代码 兼容，避免读取旧数据即崩溃） ----
+  var SCHEMA_V = 2;
+  function migrateState(s){
+    // 把可能畸形/旧结构的字段收敛为当前代码安全形态
+    if(s.done && typeof s.done==='object' && !Array.isArray(s.done)){
+      for(var dk in s.done){
+        var de = s.done[dk];
+        s.done[dk] = (de && typeof de==='object' && !Array.isArray(de)) ? { full:!!de.full, makeup:!!de.makeup } : { full:false, makeup:false };
+      }
+    }
+    if(s.kpDone && typeof s.kpDone==='object' && !Array.isArray(s.kpDone)){
+      for(var sk in s.kpDone){ if(!s.kpDone[sk] || typeof s.kpDone[sk]!=='object' || Array.isArray(s.kpDone[sk])) s.kpDone[sk] = {}; }
+    }
+    if(Array.isArray(s.wrong)){ s.wrong = s.wrong.filter(function(w){ return w && typeof w==='object' && w.sub && w.kid; }); }
+    return s;
+  }
+  (function(){
+    var v = 0;
+    try{ v = parseInt(localStorage.getItem(KEY+'_schema')||'0',10)||0; }catch(e){}
+    if(v < SCHEMA_V){ migrateState(S); normalizeState(S); try{ localStorage.setItem(KEY+'_schema', String(SCHEMA_V)); }catch(e){} }
+    else { normalizeState(S); }
+  })();
 
   // 知识点答题题库（每知识点5道选择题，考研题型）
   var QUIZ = {
@@ -7208,7 +7240,17 @@
     return n;
   }
 
-  function renderAll(){ renderToday(); renderPlan(); renderKP(); renderScore(); }
+  // 逐模块渲染保护：任一模块异常只记录并展示，不连累其它模块与整体白屏
+  function safeRender(fn, name){
+    try { fn(); }
+    catch(e){ console.error('[render '+name+']', e); if(typeof showFatal==='function') showFatal(e, '渲染「'+name+'」模块时出错'); }
+  }
+  function renderAll(){
+    safeRender(renderToday, '今日打卡');
+    safeRender(renderPlan, '学习计划');
+    safeRender(renderKP, '题库');
+    safeRender(renderScore, '积分');
+  }
 
   // ---------- 底部标签栏切换 ----------
   function switchTab(page){
@@ -7463,16 +7505,50 @@
   // 兜底：每分钟检查一次真实日期是否变化（处理长时间挂后台/跨午夜）
   setInterval(syncTime, 60000);
 
-  init();
-  _renderDate = dateStr(0);
-  renderAll();
+  try { init(); _renderDate = dateStr(0); renderAll(); }
+  catch(e){ console.error('[boot]', e); showFatal(e, '应用初始化失败'); }
+  _appRendered = true;
   // #prepOverlay 在本脚本之后才解析，故延迟到解析完成后弹「专注提醒」（每日一次）
   setTimeout(maybeShowFocusReminder, 0);
   if('serviceWorker' in navigator){ window.addEventListener('load', function(){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }); }
 
-  // 全局错误兜底（L-03）：未捕获异常/Promise 拒绝时提示并记录，便于排查
-  window.addEventListener('error', function(e){ if(window.console) console.error('[global error]', (e&&e.error)||(e&&e.message)); if(typeof showToast==='function') showToast('出错了，请重试（已记录日志）'); });
-  window.addEventListener('unhandledrejection', function(e){ if(window.console) console.error('[unhandledrejection]', e&&e.reason); if(typeof showToast==='function') showToast('出错了，请重试（已记录日志）'); });
+  // ---- 错误边界（Error Boundary）：崩溃时显示可恢复的错误面板，而非白屏/巨大"!" ----
+  var _appRendered;
+  function showFatal(err, where){
+    var ov = document.getElementById('fatalError');
+    var msg = document.getElementById('fatalMsg');
+    var text = (where ? ('['+where+'] ') : '') + (err && err.message ? err.message : (''+err));
+    if(err && err.stack) text += '\n\n' + (''+err.stack).split('\n').slice(0,4).join('\n');
+    if(msg) msg.textContent = text;
+    if(ov) ov.classList.remove('hidden');
+    if(window.console) console.error('[FATAL]', where, err);
+  }
+  function fatalRecover(){
+    if(!window.confirm('确定恢复默认数据？当前所有进度、错题、积分将被清空且不可恢复。')) return;
+    try{
+      var keys=[]; for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k && k.indexOf(KEY)===0) keys.push(k); }
+      keys.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+    }catch(e){}
+    location.reload();
+  }
+  // 错误面板按钮（复制 / 恢复）独立委托，避免与主交互冲突
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('[data-act]') : null;
+    if(!t) return;
+    var act = t.getAttribute('data-act');
+    if(act==='fatalRecover'){ fatalRecover(); }
+    else if(act==='fatalCopy'){ try{ var m=document.getElementById('fatalMsg'); if(m && navigator.clipboard) navigator.clipboard.writeText(m.textContent); if(typeof showToast==='function') showToast('已复制错误信息'); }catch(e){} }
+  });
+  // 全局错误兜底（L-03）：未捕获异常/Promise 拒绝时提示并记录；渲染未完成则直接展示错误面板
+  window.addEventListener('error', function(e){
+    if(window.console) console.error('[global error]', (e&&e.error)||(e&&e.message));
+    if(typeof showToast==='function') showToast('出错了，请重试（已记录日志）');
+    if(!_appRendered && typeof showFatal==='function') showFatal((e&&e.error)||e, '运行时错误');
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    if(window.console) console.error('[unhandledrejection]', e&&e.reason);
+    if(typeof showToast==='function') showToast('出错了，请重试（已记录日志）');
+  });
 
 })();
 </script>
@@ -7489,6 +7565,19 @@
     </ul>
     <div class="prep-enc" id="prepEncourage"></div>
     <button class="btn primary" data-act="closePrep">开始学习</button>
+  </div>
+</div>
+
+<!-- 错误边界面板：渲染/初始化失败时显示真实错误 + 恢复入口（替代白屏/巨大"!"） -->
+<div class="overlay hidden" id="fatalError">
+  <div class="modal fatal">
+    <h2>数据加载异常</h2>
+    <p class="sub">应用在渲染时遇到问题。你可以复制错误信息反馈给开发者，或恢复默认数据后重新开始。</p>
+    <pre class="fatal-msg" id="fatalMsg"></pre>
+    <div class="fatal-acts">
+      <button class="btn soft" data-act="fatalCopy">复制错误</button>
+      <button class="btn primary" data-act="fatalRecover">恢复默认数据并刷新</button>
+    </div>
   </div>
 </div>
 <script>
