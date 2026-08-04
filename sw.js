@@ -1,5 +1,5 @@
 // 我ai学习 — Service Worker (app-shell offline cache)
-const CACHE = 'kycg-v39';
+const CACHE = 'kycg-v40';
 const SHELL = [
   'app.html',
   'index.html',
